@@ -1,6 +1,6 @@
 # F3-UAM
 
-A class standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
+A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
 ##Requirements
 
@@ -191,4 +191,4 @@ $f3->uam->restartSession("guest");
 * Add good practice suggestions like csrf check, throttling etc.
 
 ##About
-This is a new class so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr
+This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr
