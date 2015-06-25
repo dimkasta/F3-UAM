@@ -38,20 +38,7 @@
 			return true;
 		}
 
-/* These belong in another class
-		
-		//Simple csrf validation. make sure that you use CSRF in your forms and requests
-		public static function validateCSRF($csrf) {
-			$f3 = \Base::instance();
-			return $f3->SESSION['csrf'] === $csrf;
-		}
-		
-		public static function createCSRF() {
-			$options = ['cost' => 11, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
-			$newToken = password_hash(date('NOW'), PASSWORD_BCRYPT, $options);
-			$f3->SESSION['csrf'] = $newToken; // use this in hidden form fields
-		}
-*/
+
 				
 		//Clearing the SESSION and resetting username and csrf token
 		public function restartSession($username) {
@@ -109,14 +96,6 @@
 				
 				$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
 				
-/*				
-				$to = $user->email;
-				$subject = $f3->site . " Account Verificaton";
-$txt = "You received this email because you have requested the creation of an Account at ". $f3->site . "\n Please click the link below to verify it\nhttp://" . $f3->domain . "/" . $f3->emailverificationroute . "?email=" . $user->email . "&token=" . $user->verificationtoken;
-				$headers = "From: " . $f3->email;
-					
-				mail($to,$subject,$txt,$headers);
-*/
 				return true;
 			}
 			else {
