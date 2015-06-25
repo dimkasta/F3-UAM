@@ -135,9 +135,9 @@ else {
 
 ####User changes email
 * User clicks the change my email link. A route shows him the form.
-* The server receives the change email POST in a route and implements requestChangeEmail("me@mydomain.com"). A new verification token is created and the new email is stored in a temporary field. An email is sent to the user with a verification link.
+* The server receives the change email POST in a route and implements requestChangeEmail("me@mydomain.com"). A new verification token is created and the new email is stored in newvalue. An email is sent to the user with a verification link.
 * User clicks the email link.
-* The server receives the GET verification request on the same configured route. If the newfield is not empty, it should check if it contains an email. If yes, then execute doChangeEmail() which changes the email and resets the temp fields.
+* The server receives the GET verification request on the same configured route. If the newvalue is not empty, it should check if it contains an email. If yes, then execute doChangeEmail() which changes the email and resets the temp fields.
 
 ```
 $test10 = $f3->uam->doChangeEmail();
@@ -151,7 +151,7 @@ else {
 
 ####User changes password
 * User clicks the change my password link. A route shows him the form.
-* The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in a temporary field. An email is sent to the user with a verification link.
+* The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in newvalue. An email is sent to the user with a verification link.
  
 ```
 $test11 = $f3->uam->requestChangePassword('123456');
@@ -164,7 +164,7 @@ else {
 ```
 
 * User clicks the email link.
-* The server receives the GET verification request on the same configured route. If the newfield is not empty, it should check if it does not contain an email. If not, then execute doChangePassword() which changes the password and resets the temp fields.
+* The server receives the GET verification request on the same configured route. If the newvalue is not empty, it should check if it contains an email. If not, then execute doChangePassword() which changes the password and resets the temp fields.
 
 ```
 $test12 = $f3->uam->doChangePassword();
