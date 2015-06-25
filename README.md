@@ -4,8 +4,7 @@ A class standing somewhere between Model and Controller, abstracting good practi
 
 ##Requirements
 
-The class needs PHP 5.5 so that password hashing and validating works. If you are using an older PHP version, you should use the bcrypt stuff from F3
-For now, the class only works with mySQL
+The class needs PHP 5.5 so that password hashing and validating works. If you are using an older PHP version, you should use the bcrypt stuff from F3. For now, the class only works with mySQL
 
 ##
 
