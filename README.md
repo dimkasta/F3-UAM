@@ -188,6 +188,7 @@ $f3->uam->restartSession("guest");
 * Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
 * Create templates for all routes.+
 * Create sample route ini file
+* Add good practice suggestions like csrf check, throttling etc.
 
 ##About
 This is a new class so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr
