@@ -51,11 +51,16 @@
 		
 		//Verify that username does not exist. Nice for Ajax GET validation
 		public function usernameAvailable($username) {
-			$f3 = \Base::instance();
-			$user = new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
-			$user->load(array('username=?',$username));
+			if($username !== 'guest') {
+				return false;
+			}
+			else {
+				$f3 = \Base::instance();
+				$user = new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
+				$user->load(array('username=?',$username));
 			
-			return $user->dry();
+				return $user->dry();
+			}
 		}
 		
 		//Verify that email does not exist and that MX entries exist. Nice for Ajax GET validation
