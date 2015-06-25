@@ -31,7 +31,7 @@ You just have to copy WebUAM.php into your lib folder, or in your AUTOLOAD folde
 
 ##Usage
 
-WebUAM extends \Prefab, so you can use the instance() call to get your singleton object
+WebUAM extends \Prefab, so you can use the instance() call to get your object
 
 ```
 $f3->uam = \WebUAM::instance();
