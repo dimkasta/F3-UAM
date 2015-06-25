@@ -74,7 +74,7 @@ $f3->uam->restartSession();
 
 ####User Signup
 * User clicks the Sign Up link. A Route is needed to display the form
-* User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid
+* User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid. Email validation also checks for proper MX stuff.
 
 ```
 $test = $f3->uam->usernameAvailable("myusername");
