@@ -47,13 +47,13 @@ To create the required table, use the static function call
 \WebUAM::createUserTable();
 ```
 
-This executes a create table SQL command and creates a Users table and includes the following fields
+This creates a Users table and includes the following fields
 
 * ID int(11) NOT NULL AUTO_INCREMENT
 *	username varchar(10) NOT NULL
 *	email varchar(50) NOT NULL
 *	isVerified tinyint(1) NOT NULL (used to check if the user has verified his email)
-* verificationtoken varchar(100) NOT NULL (used to store the verification token emailed to the user)
+*   verificationtoken varchar(100) NOT NULL (used to store the verification token emailed to the user)
 *	tokendate datetime NOT NULL (used to store the token date so that the token expires after 1 day)
 *	isActive tinyint(1) NOT NULL (used to allow admins or users to deactivate accounts by preventing login in)
 *	password varchar(100) NOT NULL
