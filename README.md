@@ -73,6 +73,7 @@ This executes a create table SQL command and creates a Users table and includes 
 $f3->uam->restartSession();
 ```
 
+####User Signup
 * User clicks the Sign Up link. A Route is needed to display the form
 * User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid
 
@@ -119,6 +120,7 @@ $test7 = $f3->uam->validateEmail();
 ```
 You do not need to pass anything to the function. It gets everything it wants from GET.
 
+####User Login
 * User clicks the login link. A route is needed to show the form.
 * A route receives the login POST and implements the dologin($username, $password) function
 
@@ -132,6 +134,7 @@ else {
 }
 ```
 
+####User changes email
 * User clicks the change my email link. A route shows him the form.
 * The server receives the change email POST in a route and implements requestChangeEmail("me@mydomain.com"). A new verification token is created and the new email is stored in a temporary field. An email is sent to the user with a verification link.
 * User clicks the email link.
@@ -147,8 +150,38 @@ else {
 }
 ```
 
+####User changes password
 * User clicks the change my password link. A route shows him the form.
 * The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in a temporary field. An email is sent to the user with a verification link.
+ 
+```
+$test11 = $f3->uam->requestChangePassword('123456');
+if($test11){
+    echo "ok req change pass<br />";
+}
+else {
+    echo "not ok req change pass<br />";
+}
+```
+
 * User clicks the email link.
 * The server receives the GET verification request on the same configured route. If the newfield is not empty, it should check if it does not contain an email. If not, then execute doChangePassword() which changes the password and resets the temp fields.
-* 
+
+```
+$test12 = $f3->uam->doChangePassword();
+if($test12){
+    echo "ok req change pass<br />";
+}
+else {
+    echo "not ok req change pass<br />";
+}
+```
+
+####User logs out
+* User clicks the Logout link. The route uses the restartSession($username) function to reset the SESSION and set the username to "guest"
+
+```
+$f3->uam->restartSession("guest");
+```
+
+
