@@ -66,19 +66,89 @@ This executes a create table SQL command and creates a Users table and includes 
 
 ###Usual program flow
 
-1. User opens the application - normal routing is used
-2. Session is reset with a guest user name
+* User opens the application - normal routing is used
+* Session is reset with a guest user name
 
 ```
 $f3->uam->restartSession();
 ```
 
-3. User clicks the Sign Up link. A Route is needed to display the form
-4. User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid
+* User clicks the Sign Up link. A Route is needed to display the form
+* User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid
 
 ```
-usernameAvailable($username);
-emailAvailable($newemail);
+$test = $f3->uam->usernameAvailable("myusername");
+if($test) {
+    echo "username available<br />";
+}
+else {
+    echo "username not available<br />";
+}
+
+$test3 = $f3->uam->emailAvailable("dimkasta@gmail.com");
+if($test3 ) {
+    echo "email available<br />";
+}
+else {
+    echo "email not available<br />";
+}
 ```
 
-5. The server receives the data in a new route that implements doSubscription($username, $email, $password). There email and username are revalidated, the password is hashed
+* The server receives the data in a route that implements doSubscription($username, $email, $password). Email and username are revalidated, the password is hashed, and a verification token is created. The user is saved as inactive and unverified, and a verification link is emailed to the user.
+
+```
+$test8 = $f3->uam->doSubscription("newusername", "me@mydomain.com", "12345678");
+if($test8) {
+    echo "ok subscribe<br />";
+}
+else {
+    echo "not ok subscribe<br />";
+} 
+```
+
+* The user receives an email with a validation link and clicks it. He is sent a route that must implement the validateEmail() function. This must be the route defined in the config, so that the class knows what alias to include in the verification link. The token is checked and if it is found identical and less than 1 day has passed from its creation, then the user is switched to verified and active in the db.
+
+```
+$test7 = $f3->uam->validateEmail();
+			if($test7){
+				echo "ok mail validate<br />";
+			}
+			else {
+				echo "not ok mail validate<br />";
+			}
+```
+You do not need to pass anything to the function. It gets everything it wants from GET.
+
+* User clicks the login link. A route is needed to show the form.
+* A route receives the login POST and implements the dologin($username, $password) function
+
+```
+$test13 = $f3->uam->doLogin('username', '12345678');
+if($test13){
+    echo "ok login<br />";
+}
+else {
+    echo "not ok login<br />";			
+}
+```
+
+* User clicks the change my email link. A route shows him the form.
+* The server receives the change email POST in a route and implements requestChangeEmail("me@mydomain.com"). A new verification token is created and the new email is stored in a temporary field. An email is sent to the user with a verification link.
+* User clicks the email link.
+* The server receives the GET verification request on the same configured route. If the newfield is not empty, it should check if it contains an email. If yes, then execute doChangeEmail() which changes the email and resets the temp fields.
+
+```
+$test10 = $f3->uam->doChangeEmail();
+if($test10){
+    echo "ok do change email";
+}
+else {
+    echo "not ok do change email";
+}
+```
+
+* User clicks the change my password link. A route shows him the form.
+* The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in a temporary field. An email is sent to the user with a verification link.
+* User clicks the email link.
+* The server receives the GET verification request on the same configured route. If the newfield is not empty, it should check if it does not contain an email. If not, then execute doChangePassword() which changes the password and resets the temp fields.
+* 
