@@ -40,7 +40,7 @@
 
 
 				
-		//Clearing the SESSION and resetting username and csrf token
+		//Clearing the SESSION and resetting username 
 		public function restartSession($username) {
 			$f3 = \Base::instance();
 			$f3->clear("SESSION");
