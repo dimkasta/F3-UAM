@@ -154,7 +154,7 @@
 			
 			if(!($user->dry()) && password_verify($password, $user->password))
 			{
-				$this->restartSession($user->username);
+				$f3->SESSION[$f3->sessionusername] = $user->username;
 				return true;
 			}
 			else {
