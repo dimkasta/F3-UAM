@@ -155,8 +155,6 @@
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=? AND isVerified = 1 AND isActive = 1',$username));
 			
-			//return password_verify($password, $user->password);
-			
 			if(!($user->dry()) && password_verify($password, $user->password))
 			{
 				$f3->SESSION[$f3->sessionusername] = $user->username;
@@ -165,7 +163,6 @@
 			else {
 				return false;
 			}
-			
 		}
 		
 		//Creates the verification token, stores the new email for reference and sends the validation email
