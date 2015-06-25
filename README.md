@@ -94,7 +94,7 @@ else {
 }
 ```
 
-* The server receives the data in a route that implements doSubscription($username, $email, $password). Email and username are revalidated, the password is hashed, and a verification token is created. The user is saved as inactive and unverified, and a verification link is emailed to the user.
+* The server receives the data in a POST route that implements doSubscription($username, $email, $password). Email and username are revalidated, the password is hashed, and a verification token is created. The user is saved as inactive and unverified, and a verification link is emailed to the user.
 
 ```
 $test8 = $f3->uam->doSubscription("newusername", "me@mydomain.com", "12345678");
@@ -106,16 +106,16 @@ else {
 } 
 ```
 
-* The user receives an email with a validation link and clicks it. He is sent a route that must implement the validateEmail() function. This must be the route defined in the config, so that the class knows what alias to include in the verification link. The token is checked and if it is found identical and less than 1 day has passed from its creation, then the user is switched to verified and active in the db.
+* The user receives an email with a validation link and clicks it. He is sent to a route that must implement the validateEmail() function. This must be the route defined in the config, so that the class knows what alias to include in the verification link. The token is checked and if it is found identical and less than 1 day has passed from its creation, then the user is switched to verified and active in the db.
 
 ```
 $test7 = $f3->uam->validateEmail();
-			if($test7){
-				echo "ok mail validate<br />";
-			}
-			else {
-				echo "not ok mail validate<br />";
-			}
+if($test7){
+    echo "ok mail validate<br />";
+}
+else {
+    echo "not ok mail validate<br />";
+}
 ```
 You do not need to pass anything to the function. It gets everything it wants from GET.
 
@@ -183,4 +183,9 @@ else {
 $f3->uam->restartSession("guest");
 ```
 
+##ToDo
+* Implement a mechanism to switch the account to inactive after 3 consecutive failed login attempts.
+* Create bootstrap templates for all routes.
 
+##About
+This is a new class so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr
