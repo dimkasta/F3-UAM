@@ -67,7 +67,7 @@ This creates a Users table and includes the following fields
 * Session is reset with a guest user name
 
 ```
-$f3->uam->restartSession();
+$f3->uam->restartSession("guest");
 ```
 
 ####User Signup
