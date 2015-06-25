@@ -85,7 +85,7 @@ else {
     echo "username not available<br />";
 }
 
-$test3 = $f3->uam->emailAvailable("dimkasta@gmail.com");
+$test3 = $f3->uam->emailAvailable("me@mydomain.com");
 if($test3 ) {
     echo "email available<br />";
 }
