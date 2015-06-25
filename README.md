@@ -182,6 +182,7 @@ $f3->uam->restartSession("guest");
 ```
 
 ##ToDo
+* Add demo site
 * Implement basic Role Management
 * Add support for older PHP versions.
 * Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
