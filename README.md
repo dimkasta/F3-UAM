@@ -252,6 +252,21 @@ else {
 
 There are also functions that allow you to access your own Role columns. All you have to do is add them in the Users table with a type of tinyint(1), and use them as follows
 
+###Account deactivation
+To be used in a simple route after a confirmation message
+
+```
+$test20 = $f3->uam->toggleAccountActivation('thisUserName');
+if($test20){
+	echo "account is active<br />";
+}
+else {
+	echo "account is not active<br />";
+}
+```
+
+
+
 ```PHP
 $test20 = $f3->uam->isInRole("myusername", "isNewRole");
 if($test20){
@@ -273,7 +288,7 @@ else {
 
 ##ToDo
 - [ ] Add demo site.
-- [ ] Account deactivation (for admin usage or user closing their own account)
+- [x] ~~Account deactivation (for admin usage or user closing their own account)~~
 - [ ] Make newvalue type check internal
 - [x] ~~Do not allow guest as a username.~~
 - [ ] Add a function to cache gravatar link
