@@ -181,11 +181,85 @@ else {
 $f3->uam->restartSession("guest");
 ```
 
+####Simple role Management
+The plugin contains simple Role management. If user in role is stored in boolean (tinyint(1)) fields called isAdmin, isAuthor and isEditor. The relevant API works like this
+
+```
+$test14 = $f3->uam->isAdmin('dimkasta');
+if($test14){
+    echo "is in role<br />";
+}
+else {
+	echo "not in role<br />";
+}
+			
+$test15 = $f3->uam->isEditor('dimkasta');
+if($test15){
+	echo "is in role<br />";
+}
+else {
+	echo "not in role<br />";
+}
+			
+$test16 = $f3->uam->isAuthor('dimkasta');
+if($test16){
+	echo "is in role<br />";
+}
+else {
+	echo "not in role<br />";
+}
+
+$test17 = $f3->uam->toggleAdmin('dimkasta');
+if($test17){
+	echo "ok role change on<br />";
+}
+else {
+	echo "ok role change off<br />";
+}
+			
+$test18 = $f3->uam->toggleAuthor('dimkasta');
+if($test18){
+	echo "ok role change on<br />";
+}
+else {
+	echo "ok role change off<br />";
+}
+			
+$test19 = $f3->uam->toggleEditor('dimkasta');
+if($test19){
+	echo "ok role change on<br />";
+}
+else {
+	echo "ok role change off<br />";
+}
+```
+
+There are also functions that allow you to access your own Role columns. All you have to do is add them in the Users table with a type of tinyint(1), and use them as follows
+
+```
+$test20 = $f3->uam->isInRole("myusername", "isNewRole");
+if($test20){
+	echo "is in role<br />";
+}
+else {
+	echo "not in role<br />";
+}
+
+$test21 = $f3->uam->toggleRole("myusername", "isNewRole");
+if($test21){
+	echo "ok role change on<br />";
+}
+else {
+	echo "ok role change off<br />";
+}
+```
+
+
 ##ToDo
 - [ ] Add demo site.
 - [x] ~~Do not allow guest as a username.~~
 - [ ] Add a function to cache gravatar link
-- [ ] Implement basic Role Management.
+- [x] ~~Implement basic Role Management.~~
 - [ ] Add support for older PHP versions.
 - [ ] Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
 - [ ] Create templates for all routes.
