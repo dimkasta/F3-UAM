@@ -194,7 +194,7 @@ else {
 * User clicks the Logout link. The route uses the restartSession($username) function to reset the SESSION and set the username to "guest"
 
 ```PHP
-$f3->uam->restartSession("guest");
+$f3->uam->doLogout();
 ```
 
 ###Simple role Management
