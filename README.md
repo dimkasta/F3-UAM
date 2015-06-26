@@ -74,7 +74,7 @@ This creates a Users table and includes the following fields
 * **newvalue varchar(100) NOT NULL** (used to store new password hashes and new emails before they are verified with an email link click)
 * **isAdmin tinyint(1) NOT NULL** (used for simple role assignment 0 not implemented yet)
 * **isAuthor tinyint(1) NOT NULL** (used for simple role assignment 0 not implemented yet)
-* **isEditor tinyint(4) NOT NULL **(used for simple role assignment 0 not implemented yet)
+* **isEditor tinyint(4) NOT NULL** (used for simple role assignment 0 not implemented yet)
 * **PRIMARY KEY (ID)**
 
 ##Usual program flow
