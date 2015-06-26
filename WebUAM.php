@@ -159,6 +159,7 @@
 			if(!($user->dry()) && password_verify($password, $user->password))
 			{
 				$f3->SESSION[$f3->sessionusername] = $user->username;
+				$this->getGravatar($user->email);
 				return true;
 			}
 			else {
@@ -314,6 +315,14 @@ $txt = "You received this email because you have requested to " . $message . " a
 			$user->isActive = !$user->isActive;
 			$user->save();
 			return $user->isActive;
+		}
+		
+		//Gets the gravatar image and stores the link into SESSION
+		public function getGravatar($email) {
+			$size = 80;
+			$f3 = \Base::instance();
+			$f3->SESSION['gravatar'] = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
+			return $f3->SESSION['gravatar'];
 		}
 	}
  
