@@ -41,11 +41,11 @@
 
 
 				
-		//Clearing the SESSION and resetting username 
-		public function restartSession($username) {
+		//Clearing the SESSION and resetting username to 'guest'
+		public function restartSession() {
 			$f3 = \Base::instance();
 			$f3->clear("SESSION");
-			$f3->SESSION[$f3->sessionusername]= $username;
+			$f3->SESSION[$f3->sessionusername]= 'guest';
 			
 			return $f3->SESSION;
 		}
