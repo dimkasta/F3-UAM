@@ -305,6 +305,16 @@ $txt = "You received this email because you have requested to " . $message . " a
 			$user->save();
 			return $user[$role];
 		}
+		
+		//Used to deacctivate user account and so not allowing login
+		public function toggleAccountActivation($username) {
+			$f3 = \Base::instance();
+			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
+			$user->load(array('username=?',$username));
+			$user->isActive = !$user->isActive;
+			$user->save();
+			return $user->isActive;
+		}
 	}
  
  ?>
