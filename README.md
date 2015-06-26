@@ -33,7 +33,7 @@ You just have to copy WebUAM.php into your lib folder, or in your AUTOLOAD folde
 
 WebUAM extends \Prefab, so you can use the static instance() call to get your object
 
-```php
+```PHP
 $f3->uam = \WebUAM::instance();
 ```
 
@@ -41,7 +41,7 @@ $f3->uam = \WebUAM::instance();
 
 To create the required table, use the static function call
 
-```php
+```PHP
 \WebUAM::createUserTable();
 ```
 
@@ -66,7 +66,7 @@ This creates a Users table and includes the following fields
 * User opens the application - normal routing is used
 * Session is reset with a guest user name
 
-```
+```PHP
 $f3->uam->restartSession("guest");
 ```
 
@@ -74,7 +74,7 @@ $f3->uam->restartSession("guest");
 * User clicks the Sign Up link. A Route is needed to display the form
 * User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid. Email validation also checks for proper MX stuff.
 
-```
+```PHP
 $test = $f3->uam->usernameAvailable("myusername");
 if($test) {
     echo "username available<br />";
@@ -94,7 +94,7 @@ else {
 
 * The server receives the data in a POST route that implements doSubscription($username, $email, $password). Email and username are revalidated, the password is hashed, and a verification token is created. The user is saved as inactive and unverified, and a verification link is emailed to the user.
 
-```
+```PHP
 $test8 = $f3->uam->doSubscription("newusername", "me@mydomain.com", "12345678");
 if($test8) {
     echo "ok subscribe<br />";
@@ -106,7 +106,7 @@ else {
 
 * The user receives an email with a validation link and clicks it. He is sent to a route that must implement the validateEmail() function. This must be the route defined in the config, so that the class knows what alias to include in the verification link. The token is checked and if it is found identical and less than 1 day has passed from its creation, then the user is switched to verified and active in the db.
 
-```
+```PHP
 $test7 = $f3->uam->validateEmail();
 if($test7){
     echo "ok mail validate<br />";
@@ -121,7 +121,7 @@ You do not need to pass anything to the function. It gets everything it wants fr
 * User clicks the login link. A route is needed to show the form.
 * A route receives the login POST and implements the dologin($username, $password) function
 
-```
+```PHP
 $test13 = $f3->uam->doLogin('username', '12345678');
 if($test13){
     echo "ok login<br />";
@@ -137,7 +137,7 @@ else {
 * User clicks the email link.
 * The server receives the GET verification request on the same configured route. If the newvalue is not empty, it should check if it contains an email. If yes, then execute doChangeEmail() which changes the email and resets the temp fields.
 
-```
+```PHP
 $test10 = $f3->uam->doChangeEmail();
 if($test10){
     echo "ok do change email";
@@ -151,7 +151,7 @@ else {
 * User clicks the change my password link. A route shows him the form.
 * The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in newvalue. An email is sent to the user with a verification link.
  
-```
+```PHP
 $test11 = $f3->uam->requestChangePassword('123456');
 if($test11){
     echo "ok req change pass<br />";
@@ -164,7 +164,7 @@ else {
 * User clicks the email link.
 * The server receives the GET verification request on the same configured route. If the newvalue is not empty, it should check if it contains an email. If not, then execute doChangePassword() which changes the password and resets the temp fields.
 
-```
+```PHP
 $test12 = $f3->uam->doChangePassword();
 if($test12){
     echo "ok req change pass<br />";
@@ -177,14 +177,14 @@ else {
 ####User logs out
 * User clicks the Logout link. The route uses the restartSession($username) function to reset the SESSION and set the username to "guest"
 
-```
+```PHP
 $f3->uam->restartSession("guest");
 ```
 
 ####Simple role Management
 The plugin contains simple Role management. If user in role is stored in boolean (tinyint(1)) fields called isAdmin, isAuthor and isEditor. The relevant API works like this
 
-```
+```PHP
 $test14 = $f3->uam->isAdmin('dimkasta');
 if($test14){
     echo "is in role<br />";
@@ -236,7 +236,7 @@ else {
 
 There are also functions that allow you to access your own Role columns. All you have to do is add them in the Users table with a type of tinyint(1), and use them as follows
 
-```
+```PHP
 $test20 = $f3->uam->isInRole("myusername", "isNewRole");
 if($test20){
 	echo "is in role<br />";
