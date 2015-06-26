@@ -254,26 +254,50 @@ $txt = "You received this email because you have requested to " . $message . " a
 
 		//Used to check if the user is an administrator
 		public function isAdmin($username) {
-			$f3 = \Base::instance();
-			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
-			$user->load(array('username=?',$username));
-			return $user->isAdmin;
+			return $this->isInRole($username, 'isAdmin');
+		}
+		
+		//Used to toggle user as Admin
+		public function toggleAdmin($username) {
+			return $this->toggleRole($username, 'isAdmin');
 		}
 		
 		//Used to check if the user is an Author
 		public function isAuthor($username) {
-			$f3 = \Base::instance();
-			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
-			$user->load(array('username=?',$username));
-			return $user->isAuthor;
+			return $this->isInRole($username, 'isAuthor');
 		}
 		
-		//Used to check if the user is an Author
+		//Used to toggle user as Author
+		public function toggleAuthor($username) {
+			return $this->toggleRole($username, 'isAuthor');
+		}
+		
+		//Used to check if the user is an Editor
 		public function isEditor($username) {
+			return $this->isInRole($username, 'isEditor');
+		}
+		
+		//Used to toggle user as Editor
+		public function toggleEditor($username) {
+			return $this->toggleRole($username, 'isEditor');
+		}
+		
+		//Used to check if the user has a role
+		public function isInRole($username, $role) {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=?',$username));
-			return $user->isEditor;
+			return $user[$role];
+		}
+		
+		//Used to toggle user role
+		public function toggleRole($username, $role) {
+			$f3 = \Base::instance();
+			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
+			$user->load(array('username=?',$username));
+			$user[$role] = !$user[$role];
+			$user->save();
+			return $user[$role];
 		}
 	}
  
