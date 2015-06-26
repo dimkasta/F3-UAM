@@ -14,6 +14,7 @@ A plugin standing somewhere between Model and Controller, abstracting good pract
   * [User changes password](#user-changes-password)
   * [User logs out](#user-logs-out)
   * [Simple role Management](#simple-role-management)
+  * [Account Deactivation](#account-deactivcation)
 * [ToDo](#todo)
 * [About](#about)
 
@@ -252,21 +253,6 @@ else {
 
 There are also functions that allow you to access your own Role columns. All you have to do is add them in the Users table with a type of tinyint(1), and use them as follows
 
-###Account deactivation
-To be used in a simple route after a confirmation message
-
-```
-$test20 = $f3->uam->toggleAccountActivation('thisUserName');
-if($test20){
-	echo "account is active<br />";
-}
-else {
-	echo "account is not active<br />";
-}
-```
-
-
-
 ```PHP
 $test20 = $f3->uam->isInRole("myusername", "isNewRole");
 if($test20){
@@ -285,6 +271,18 @@ else {
 }
 ```
 
+###Account deactivation
+To be used in a simple route after a confirmation message
+
+```
+$test22 = $f3->uam->toggleAccountActivation('thisUserName');
+if($test22){
+	echo "account is active<br />";
+}
+else {
+	echo "account is not active<br />";
+}
+```
 
 ##ToDo
 - [ ] Add demo site.
