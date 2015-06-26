@@ -166,6 +166,11 @@
 			}
 		}
 		
+		//Wipes out the SESSION entries and sets username to 'guest'
+		public function doLogout() {
+			$this->restartSession();
+		}
+		
 		//Creates the verification token, stores the new email for reference and sends the validation email
 		public function requestChangeEmail($newEmail) {
 		
