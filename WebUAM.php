@@ -12,6 +12,7 @@
  **/
 	
 	class WebUAM extends \Prefab {
+	
 		public function __construct() {
 		
 		}
