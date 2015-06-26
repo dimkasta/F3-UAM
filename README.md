@@ -183,7 +183,7 @@ $f3->uam->restartSession("guest");
 
 ##ToDo
 - [ ] Add demo site.
-- [x] --Do not allow guest as a username.--
+- [x] ~~Do not allow guest as a username.~~
 - [ ] Add a function to cache gravatar link
 - [ ] Implement basic Role Management.
 - [ ] Add support for older PHP versions.
