@@ -46,7 +46,7 @@
 			$f3 = \Base::instance();
 			$f3->clear("SESSION");
 			$f3->SESSION[$f3->sessionusername]= 'guest';
-			
+			$f3->SESSION['gravatar'] = $this->getGravatar('guest');
 			return $f3->SESSION;
 		}
 		
