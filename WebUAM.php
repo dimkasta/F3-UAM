@@ -7,7 +7,7 @@
     can be waived if you get permission from the copyright holder.
     Copyright (c) 2015 by dimkasta
     Dimitris Kastaniotis <dimkasta@yahoo.gr>
-    @version 0.1.1
+    @version 0.1.alpha
 	Requires PHP 5.5
  **/
 	
