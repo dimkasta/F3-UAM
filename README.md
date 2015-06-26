@@ -33,7 +33,7 @@ You just have to copy WebUAM.php into your lib folder, or in your AUTOLOAD folde
 
 WebUAM extends \Prefab, so you can use the static instance() call to get your object
 
-```
+```php
 $f3->uam = \WebUAM::instance();
 ```
 
@@ -41,7 +41,7 @@ $f3->uam = \WebUAM::instance();
 
 To create the required table, use the static function call
 
-```
+```php
 \WebUAM::createUserTable();
 ```
 
