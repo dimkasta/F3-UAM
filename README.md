@@ -14,7 +14,7 @@ A plugin standing somewhere between Model and Controller, abstracting good pract
   * [User changes password](#user-changes-password)
   * [User logs out](#user-logs-out)
   * [Simple role Management](#simple-role-management)
-  * [Account Deactivation](#account-deactivation)
+  * [Account Activation-Deactivation](#account-activation-deactivation)
 * [ToDo](#todo)
 * [About](#about)
 
@@ -271,7 +271,7 @@ else {
 }
 ```
 
-###Account deactivation
+###Account Activation-Deactivation
 To be used in a simple route after a confirmation message
 
 ```
