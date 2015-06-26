@@ -63,19 +63,19 @@ To create the required table, use the static function call
 
 This creates a Users table and includes the following fields
 
-* ID int(11) NOT NULL AUTO_INCREMENT
-*	username varchar(10) NOT NULL
-*	email varchar(50) NOT NULL
-*	isVerified tinyint(1) NOT NULL (used to check if the user has verified his email)
-*   verificationtoken varchar(100) NOT NULL (used to store the verification token emailed to the user)
-*	tokendate datetime NOT NULL (used to store the token date so that the token expires after 1 day)
-*	isActive tinyint(1) NOT NULL (used to allow admins or users to deactivate accounts by preventing login in)
-*	password varchar(100) NOT NULL
-*	newvalue varchar(100) NOT NULL (used to store new password hashes and new emails before they are verified with an email link click)
-*	isAdmin tinyint(1) NOT NULL (used for simple role assignment 0 not implemented yet)
-*	isAuthor tinyint(1) NOT NULL (used for simple role assignment 0 not implemented yet)
-*	isEditor tinyint(4) NOT NULL (used for simple role assignment 0 not implemented yet)
-* PRIMARY KEY (ID)
+* **ID int(11) NOT NULL AUTO_INCREMENT**
+* **username varchar(10) NOT NULL**
+* **email varchar(50) NOT NULL**
+* **isVerified tinyint(1) NOT NULL** (used to check if the user has verified his email)
+* **verificationtoken varchar(100) NOT NULL** (used to store the verification token emailed to the user)
+* **tokendate datetime NOT NULL** (used to store the token date so that the token expires after 1 day)
+* **isActive tinyint(1) NOT NULL** (used to allow admins or users to deactivate accounts by preventing login in)
+* **password varchar(100) NOT NULL**
+* **newvalue varchar(100) NOT NULL** (used to store new password hashes and new emails before they are verified with an email link click)
+* **isAdmin tinyint(1) NOT NULL** (used for simple role assignment 0 not implemented yet)
+* **isAuthor tinyint(1) NOT NULL** (used for simple role assignment 0 not implemented yet)
+* **isEditor tinyint(4) NOT NULL **(used for simple role assignment 0 not implemented yet)
+* **PRIMARY KEY (ID)**
 
 ##Usual program flow
 
