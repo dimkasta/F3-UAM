@@ -15,6 +15,7 @@ A plugin standing somewhere between Model and Controller, abstracting good pract
   * [User logs out](#user-logs-out)
   * [Simple role Management](#simple-role-management)
   * [Account Activation-Deactivation](#account-activation-deactivation)
+  * [Get Gravatar image](#get-gravatar-image)
 * [ToDo](#todo)
 * [About](#about)
 
@@ -284,12 +285,21 @@ else {
 }
 ```
 
+##Get Gravatar Image
+You can use this to get the Gravatar image url
+The login function calls it automatically after success and stores it into SESSION['gravatar'].
+
+```
+$test23 = getGravatar($email);
+echo '<img src="' . $test23 . '" />';
+```
+
 ##ToDo
 - [ ] Add demo site.
 - [x] ~~Account deactivation (for admin usage or user closing their own account)~~
 - [ ] Make newvalue type check internal
 - [x] ~~Do not allow guest as a username.~~
-- [ ] Add a function to cache gravatar link
+- [x] ~~Add a function to cache gravatar link.~~
 - [x] ~~Implement basic Role Management.~~
 - [ ] Add support for older PHP versions.
 - [ ] Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
