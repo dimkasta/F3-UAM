@@ -198,7 +198,7 @@ $f3->uam->restartSession("guest");
 ```
 
 ###Simple role Management
-The plugin contains simple Role management. Role State is stored in boolean (tinyint(1)) fields called isAdmin, isAuthor and isEditor. You can add your own columns/Roles and access them. The relevant API works like this
+The plugin contains simple Role management. Role State is stored in boolean (tinyint(1)) fields called isAdmin, isAuthor and isEditor. These 3 Roles were chosen as default because they fit the most common CMS practice. But you can easily add your own columns/Roles and access them. The relevant API works like this
 
 ```PHP
 $test14 = $f3->uam->isAdmin('dimkasta');
