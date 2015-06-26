@@ -2,6 +2,22 @@
 
 A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
+##Table of Contents
+
+* [Requirements](#requirements)
+* [Setup and Basic usage](#setup)
+* [DB Table Creation](#db-table-creation)
+* [Usual program flow](#usual-program-flow)
+  * [User Signup](#user-signup)
+  * [User Login](#user-login)
+  * [User changes email](#user-changes-email)
+  * [User changes password](#user-changes-password)
+  * [User logs out](#user-logs-out)
+  * [Simple role Management](#simple-role-management)
+* [ToDo](#todo)
+* [About](#about)
+
+
 ##Requirements
 
 The class needs PHP 5.5 so that password hashing and validating works. If you are using an older PHP version, you should use the bcrypt stuff from F3. Support for older PHP will be added very soon. For now, the class only works with mySQL.
