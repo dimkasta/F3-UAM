@@ -285,4 +285,7 @@ else {
 - [ ] Add good practice suggestions like csrf check, throttling etc.
 
 ##About
-This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr
+This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr or at @dimkasta
+http://www.autowebic.com
+
+![by autowebic](http://autowebic.com/autowebic_trio.jpg)
