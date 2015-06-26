@@ -252,8 +252,29 @@ $txt = "You received this email because you have requested to " . $message . " a
 				mail($email,$subject,$txt,$headers);
 		}
 
+		//Used to check if the user is an administrator
+		public function isAdmin($username) {
+			$f3 = \Base::instance();
+			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
+			$user->load(array('username=?',$username));
+			return $user->isAdmin;
+		}
 		
-
+		//Used to check if the user is an Author
+		public function isAuthor($username) {
+			$f3 = \Base::instance();
+			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
+			$user->load(array('username=?',$username));
+			return $user->isAuthor;
+		}
+		
+		//Used to check if the user is an Author
+		public function isEditor($username) {
+			$f3 = \Base::instance();
+			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
+			$user->load(array('username=?',$username));
+			return $user->isEditor;
+		}
 	}
  
  ?>
