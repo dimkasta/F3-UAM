@@ -257,6 +257,7 @@ else {
 
 ##ToDo
 - [ ] Add demo site.
+- [ ] Make newvalue type check internal
 - [x] ~~Do not allow guest as a username.~~
 - [ ] Add a function to cache gravatar link
 - [x] ~~Implement basic Role Management.~~
