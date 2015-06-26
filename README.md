@@ -273,6 +273,7 @@ else {
 
 ##ToDo
 - [ ] Add demo site.
+- [ ] Account deactivation (for admin usage or user closing their own account)
 - [ ] Make newvalue type check internal
 - [x] ~~Do not allow guest as a username.~~
 - [ ] Add a function to cache gravatar link
