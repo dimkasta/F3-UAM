@@ -182,16 +182,16 @@ $f3->uam->restartSession("guest");
 ```
 
 ##ToDo
-* Add demo site.
-* Do not allow guest as a username.
-* Add a function to cache gravatar link
-* Implement basic Role Management.
-* Add support for older PHP versions.
-* Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
-* Create templates for all routes.
-* Create email templates.
-* Create sample route ini file
-* Add good practice suggestions like csrf check, throttling etc.
+[ ] Add demo site.
+[x] Do not allow guest as a username.
+[ ] Add a function to cache gravatar link
+[ ] Implement basic Role Management.
+[ ] Add support for older PHP versions.
+[ ] Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
+[ ] Create templates for all routes.
+[ ] Create email templates.
+[ ] Create sample route ini file
+[ ] Add good practice suggestions like csrf check, throttling etc.
 
 ##About
 This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr
