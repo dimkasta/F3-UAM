@@ -61,7 +61,7 @@ This creates a Users table and includes the following fields
 *	isEditor tinyint(4) NOT NULL (used for simple role assignment 0 not implemented yet)
 * PRIMARY KEY (ID)
 
-###Usual program flow
+##Usual program flow
 
 * User opens the application - normal routing is used
 * Session is reset with a guest user name
@@ -70,7 +70,7 @@ This creates a Users table and includes the following fields
 $f3->uam->restartSession("guest");
 ```
 
-####User Signup
+###User Signup
 * User clicks the Sign Up link. A Route is needed to display the form
 * User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid. Email validation also checks for proper MX stuff.
 
@@ -117,7 +117,7 @@ else {
 ```
 You do not need to pass anything to the function. It gets everything it wants from GET.
 
-####User Login
+###User Login
 * User clicks the login link. A route is needed to show the form.
 * A route receives the login POST and implements the dologin($username, $password) function
 
@@ -131,7 +131,7 @@ else {
 }
 ```
 
-####User changes email
+###User changes email
 * User clicks the change my email link. A route shows him the form.
 * The server receives the change email POST in a route and implements requestChangeEmail("me@mydomain.com"). A new verification token is created and the new email is stored in newvalue. An email is sent to the user with a verification link.
 * User clicks the email link.
@@ -147,7 +147,7 @@ else {
 }
 ```
 
-####User changes password
+###User changes password
 * User clicks the change my password link. A route shows him the form.
 * The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in newvalue. An email is sent to the user with a verification link.
  
@@ -174,14 +174,14 @@ else {
 }
 ```
 
-####User logs out
+###User logs out
 * User clicks the Logout link. The route uses the restartSession($username) function to reset the SESSION and set the username to "guest"
 
 ```PHP
 $f3->uam->restartSession("guest");
 ```
 
-####Simple role Management
+###Simple role Management
 The plugin contains simple Role management. If user in role is stored in boolean (tinyint(1)) fields called isAdmin, isAuthor and isEditor. The relevant API works like this
 
 ```PHP
