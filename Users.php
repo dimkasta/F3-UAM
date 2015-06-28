@@ -11,7 +11,6 @@ class Users {
 	}
 	
 	public static function validateEmail($f3) {
-		$f3 = \Base::instance();
 		$f3->uam->validateEmail();
 		$f3->reroute('/login');
 	}
