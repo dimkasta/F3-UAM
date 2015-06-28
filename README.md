@@ -1,4 +1,4 @@
-# F3-UAM v0.1.alpha
+# F3-UAM v0.1.5.alpha
 
 A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
