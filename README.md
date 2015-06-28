@@ -86,7 +86,7 @@ This creates a Users table and includes the following fields
 * Session is reset with a guest user name
 
 ```PHP
-$f3->uam->startSession("guest");
+$f3->uam->startSession();
 ```
 
 ###User Signup
