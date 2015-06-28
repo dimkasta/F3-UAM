@@ -7,21 +7,22 @@
     can be waived if you get permission from the copyright holder.
     Copyright (c) 2015 by dimkasta
     Dimitris Kastaniotis <dimkasta@yahoo.gr>
-    @version 0.1.alpha
+    @version 0.1.5.alpha
 	Requires PHP 5.5
  **/
 	
 	class WebUAM extends \Prefab {
 	
 		public function __construct() {
-		
+			$f3 = \Base::instance();
+			if($f3->fluidmode === true) {
+				\WebUAM::createUSerTable($f3);
+			}
 		}
 		
 		//Call it statically to create the User table
-		public static function createUserTable() {
-			$f3 = \Base::instance();
-			$uamdb = $f3->get($f3->dbobject);
-			$uamdb->exec("CREATE TABLE IF NOT EXISTS Users (
+		public static function createUserTable($f3) {
+			$f3->get($f3->dbobject)->exec("CREATE TABLE IF NOT EXISTS Users (
 			  ID int(11) NOT NULL AUTO_INCREMENT,
 			  username varchar(10) NOT NULL,
 			  email varchar(50) NOT NULL,
@@ -36,103 +37,127 @@
 			  isEditor tinyint(4) NOT NULL,
 			  PRIMARY KEY (ID)
 			)");
-			return true;
 		}
 
-
+		public function startSession() {
+			$f3 = \Base::instance();
+			if(!$f3->SESSION[$f3->sessionusername]) {
+		    		$f3->uam->clearSession();
+		    	}
+		}
 				
 		//Clearing the SESSION and resetting username to 'guest'
-		public function restartSession() {
+		public function clearSession() {
 			$f3 = \Base::instance();
 			$f3->clear("SESSION");
 			$f3->SESSION[$f3->sessionusername]= 'guest';
 			$f3->SESSION['gravatar'] = $this->getGravatar('guest');
-			return $f3->SESSION;
 		}
 		
 		//Verify that username does not exist. Nice for Ajax GET validation
 		public function usernameAvailable($username) {
-			if($username !== 'guest') {
-				return false;
+			$json = \RESTAPI::getObject();
+			if($username === 'guest') {
+				$json->success = false;
+				$json->errors->username = "Username cannot be guest";
 			}
 			else {
 				$f3 = \Base::instance();
 				$user = new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 				$user->load(array('username=?',$username));
-			
-				return $user->dry();
+				if($user->dry()) {
+					$json->success = true;
+					$json->errors->username = "Username is available";
+				}
+				else {
+					$json->success = false;
+					$json->errors->username = "Username is already in use.";
+				}
 			}
+			return $json;
 		}
 		
 		//Verify that email does not exist and that MX entries exist. Nice for Ajax GET validation
 		public function emailAvailable($newemail) {
+			$rest = \RESTAPI::getObject();
 			$audit = \Audit::instance();
 			$valid = $audit->email($newemail, TRUE);
-			
 			$f3 = \Base::instance();
 			$user = new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('email=?',$newemail));
-			
-			return $user->dry() && $valid;
+			if($user->dry() && $valid) {
+				$rest->success = true;
+				$rest->messages->email = "Email is valid and available";
+			}
+			else {
+				$rest->success = false;
+				if(!$user->dry()) {
+					$rest->errors->email = "Email is already in use";
+				}
+				if(!$valid) {
+					$rest->errors->email = "Email is not valid";
+				}
+			}
+			return $rest;
 		}
 		
 		//Revalidates user and email, Stores the user data, creates a validation token and emails it
 		public function doSubscription($username, $email, $password) {
 			$usernameValid = $this->usernameAvailable($username);
 			$emailValid = $this->emailAvailable($email);
-			
+			$passwordValid = strlen($password) >= 8;
+			$json = \RESTAPI::getObject();
+			$json->errors->email = $emailValid->errors->email;
+			$json->errors->username = $usernameValid->errors->username;
+			$json->messages->email = $emailValid->messages->email;
+			$json->messages->username = $usernameValid->messages->username;
+			if($passwordValid) {
+				$json->messages->password = "Password is valid";
+			}
+			else {
+				$json->messages->password = "Password is not valid";
+			}
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=? OR email=?',$username, $email));
-			
-			if( $usernameValid && $emailValid && $user->dry()) {
+			if( $usernameValid->success && $emailValid->success && $passwordValid && $user->dry()) {
 				$user->username = $username;
 				$user->email = $email;
-				
 				$tokenoptions = ['cost' => 5, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 				$user->verificationtoken = password_hash($email, PASSWORD_BCRYPT, $tokenoptions);
-				
 				$d = new \DateTime('NOW');
 				$user->tokendate = $d->format(\DateTime::ISO8601);
-				
 				$passoptions = ['cost' => 11, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 				$user->password = password_hash($password, PASSWORD_BCRYPT, $passoptions );
-				
 				$user->save();
-				
 				$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
-				
-				return true;
+				$json->success = true;
+				$json->messages->form = "Sign Up successful. Please check your email for the verifification email link";
 			}
 			else {
-				return false;
+				$json->success = false;
+				$json->errors->form = "Sign Up unsuccessful";
 			}
+			return $json;			
 		}
 		
 		//Should be triggered by the emailverificationroute to verify the email link click and activate the account
 		public function validateEmail() {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
-			
 			$token = $f3->get('GET.token');
 			$email = $f3->get('GET.email');
-			
 			$user->load(array('email=? AND isActive = 0 AND isVerified = 0',$f3->get('GET.email')));
-			
 			$now = new \DateTime('NOW');
 			$tokendate = new \DateTime($user->tokendate);
-			
 			//check if verification code is old and resend email
 			if(date_add($tokendate , date_interval_create_from_date_string('1 days')) < $now) {
-				
 				$options = ['cost' => 5, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 				$user->verificationtoken = password_hash($f3->get('POST.email'), PASSWORD_BCRYPT, $options);
 				$user->tokendate = $now->format(\DateTime::ISO8601);
 				$user->save();
-				
 				$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
-
-				$message = "The token was older than 1 day. We have sent you a fresh one. Please check your email and click the verification link";
+	$message = "The token was older than 1 day. We have sent you a fresh one. Please check your email and click the verification link";
 				throw new Exception($message);
 			}
 			else {
@@ -155,43 +180,42 @@
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=? AND isVerified = 1 AND isActive = 1',$username));
-			
+			$json = \RESTAPI::getObject();
 			if(!($user->dry()) && password_verify($password, $user->password))
 			{
 				$f3->SESSION[$f3->sessionusername] = $user->username;
 				$f3->SESSION['gravatar'] = $this->getGravatar($user->email);
-				return true;
+				$json->success = true;
+				$json->messages->form = "Login Success";
 			}
 			else {
-				return false;
+				$json->success = false;
+				$json->errors->form = "Login failed";
 			}
+			return $json;
 		}
 		
 		//Wipes out the SESSION entries and sets username to 'guest'
 		public function doLogout() {
-			$this->restartSession();
+			$this->clearSession();
 		}
 		
 		//Creates the verification token, stores the new email for reference and sends the validation email
 		public function requestChangeEmail($newEmail) {
-		
 			if($this->emailAvailable($newEmail)) {
 				$f3 = \Base::instance();
 				$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 				$user->load(array('username=?',$f3->SESSION[$f3->sessionusername]));
-				
 				$options = ['cost' => 5, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 				$user->verificationtoken = password_hash($newEmail, PASSWORD_BCRYPT, $options);
 				$user->newvalue = $newEmail;
 				$user->save();
-				
 				$this->sendValidationTokenEmail($newEmail, $user->verificationtoken, "Change your Email");
 				return true;
 			}
 			else {
 				return false;
 			}
-			
 		}
 		
 		//Checks the token against the stored new email and stored token, and updates the email upon success
@@ -201,7 +225,6 @@
 			$token = $f3->GET["token"];
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('newvalue=?',$email));
-			
 			if(!($user->dry()) && password_verify($email, $user->verificationtoken) && $token === $user->verificationtoken) {
 				$user->email = $email;
 				$user->newvalue = "";
@@ -218,15 +241,11 @@
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=?',$f3->SESSION[$f3->sessionusername]));
-			
 			$options = ['cost' => 5, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 			$user->verificationtoken = password_hash($user->email, PASSWORD_BCRYPT, $options);
-			
 			$passoptions = ['cost' => 11, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 			$user->newvalue = password_hash($newPassword, PASSWORD_BCRYPT, $passoptions);
-			
 			$user->save();
-				
 			$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Change your Password");
 			return true;
 		}
@@ -238,7 +257,6 @@
 			$token = $f3->GET["token"];
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('email=?',$email));
-			
 			if(!($user->dry()) && !(empty($user->newvalue)) && $token === $user->verificationtoken) {
 				$user->password = $user->newvalue;
 				$user->newvalue = "";
