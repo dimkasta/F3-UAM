@@ -45,7 +45,8 @@ A sample ini file is included (config.ini)
 
 ###Files
 
-You just have to copy WebUAM.php into your lib folder, or in your AUTOLOAD folder
+You just have to copy WebUAM.php into your lib folder, or in your AUTOLOAD folder.
+You also need RESTAPI.php in the same folder, which is just a small helper class to abstract some repeating code.
 
 ##Usage
 
