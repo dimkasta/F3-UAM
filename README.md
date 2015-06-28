@@ -86,28 +86,29 @@ This creates a Users table and includes the following fields
 * Session is reset with a guest user name
 
 ```PHP
-$f3->uam->restartSession("guest");
+$f3->uam->startSession("guest");
 ```
 
 ###User Signup
 * User clicks the Sign Up link. A Route is needed to display the form
 * User fills in his info and submits. AJAX calls can be made to new Routes that validate that user name and email are not already used and are valid. Email validation also checks for proper MX stuff.
+* The functions return a json object that includes detailed messages and errors
 
 ```PHP
 $test = $f3->uam->usernameAvailable("myusername");
-if($test) {
-    echo "username available<br />";
+if($test->success) {
+    echo $test->messages->username;
 }
 else {
-    echo "username not available<br />";
+    echo $test->errors->username;
 }
 
 $test3 = $f3->uam->emailAvailable("me@mydomain.com");
-if($test3 ) {
-    echo "email available<br />";
+if($test3->success ) {
+    echo $test3->messages->email;
 }
 else {
-    echo "email not available<br />";
+    echo $test->errors->email;
 }
 ```
 
@@ -115,11 +116,11 @@ else {
 
 ```PHP
 $test8 = $f3->uam->doSubscription("newusername", "me@mydomain.com", "12345678");
-if($test8) {
-    echo "ok subscribe<br />";
+if($test8->success) {
+    echo $test8->messages->form;
 }
 else {
-    echo "not ok subscribe<br />";
+    echo $test8->errors->form . "<br />" . $test8->errors->email . "<br />" . $test8->errors->username . "<br />" . $test8->errors->password . "<br />" ;
 } 
 ```
 
@@ -139,14 +140,15 @@ You do not need to pass anything to the function. It gets everything it wants fr
 ###User Login
 * User clicks the login link. A route is needed to show the form.
 * A route receives the login POST and implements the dologin($username, $password) function
+* The function now returns a JSON object with messages
 
 ```PHP
 $test13 = $f3->uam->doLogin('username', '12345678');
-if($test13){
-    echo "ok login<br />";
+if($test13->success){
+    echo $test13->messages->form;
 }
 else {
-    echo "not ok login<br />";			
+    echo $test13->errors->form;			
 }
 ```
 
