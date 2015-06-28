@@ -312,6 +312,7 @@ echo '<img src="' . $test23 . '" />';
 - [ ] Create templates for all routes.
 - [ ] Create email templates.
 - [ ] Create sample route ini file
+- [ ] Multilingual support
 - [x] ~~Implement doLogout().~~
 - [ ] Add good practice suggestions like csrf check, throttling etc.
 
