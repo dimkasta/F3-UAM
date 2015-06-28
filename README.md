@@ -57,10 +57,10 @@ $f3->uam = \WebUAM::instance();
 
 ###DB Table Creation
 
-To create the required table, use the static function call
+Table creation is automatic, if you set a configuration variable. I call it fluidmode to keep it in context with existing F3 experience (Cortex). Just remember to set it to false to save some processing time.
 
 ```PHP
-\WebUAM::createUserTable();
+fluidmode=true
 ```
 
 This creates a Users table and includes the following fields
