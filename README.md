@@ -300,7 +300,7 @@ echo '<img src="' . $test23 . '" />';
 - [ ] Make role queries simpler
 - [x] ~~Create a RESTAPI Helper (Can be used standalone)~~
 - [x] ~~Account deactivation (for admin usage or user closing their own account)~~
-- [ ] Make newvalue type check internal
+- [ ] Make newvalue type check internal. Split it to two fields
 - [x] ~~Do not allow guest as a username.~~
 - [x] ~~Add a function to cache gravatar link.~~
 - [x] ~~Implement basic Role Management.~~
