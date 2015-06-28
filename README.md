@@ -299,6 +299,7 @@ echo '<img src="' . $test23 . '" />';
 
 ##ToDo
 - [ ] Add demo site.
+- [x] ~~Add Sample Controller~~
 - [ ] Make calls more REST/JSON friendly
 - [ ] Make role queries simpler
 - [x] ~~Create a RESTAPI Helper (Can be used standalone)~~
