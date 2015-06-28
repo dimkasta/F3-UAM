@@ -22,7 +22,6 @@ class Users {
 	}
 	
 	public static function doLogin($f3) {
-		$params = json_decode(file_get_contents('php://input'));
 		\RESTAPI::returnJSON($f3->uam->doLogin($f3->POST['username'], $f3->POST['password']));
 	}
 	
