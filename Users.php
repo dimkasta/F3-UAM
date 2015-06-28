@@ -1,7 +1,6 @@
 <?php
 //Sample Controller. You need routes for each one of the functions below
 namespace Controller;
-
 class Users {
 	public static function subscribe($f3) {
     		//Show subscription form
