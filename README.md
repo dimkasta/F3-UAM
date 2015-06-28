@@ -296,6 +296,9 @@ echo '<img src="' . $test23 . '" />';
 
 ##ToDo
 - [ ] Add demo site.
+- [ ] Make calls more REST/JSON friendly
+- [ ] Make role queries simpler
+- [x] ~~Create a RESTAPI Helper (Can be used standalone)~~
 - [x] ~~Account deactivation (for admin usage or user closing their own account)~~
 - [ ] Make newvalue type check internal
 - [x] ~~Do not allow guest as a username.~~
