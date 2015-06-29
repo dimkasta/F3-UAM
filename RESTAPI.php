@@ -3,10 +3,10 @@
 	class RESTAPI {
 		
 		public static function getObject() {
-			$jsonObject =  new stdClass();//json_decode(json_encode(array(), JSON_FORCE_OBJECT));
-			$jsonObject->errors =  new stdClass();//json_decode(json_encode(array(), JSON_FORCE_OBJECT));
-			$jsonObject->messages =  new stdClass();//json_decode(json_encode(array(), JSON_FORCE_OBJECT));
-			$jsonObject->data =  new stdClass();//json_decode(json_encode(array(), JSON_FORCE_OBJECT));
+			$jsonObject =  new stdClass();
+			$jsonObject->errors =  new stdClass();
+			$jsonObject->messages =  new stdClass();
+			$jsonObject->data =  new stdClass();
 			$jsonObject->success = false;
 			return $jsonObject;
 		}
