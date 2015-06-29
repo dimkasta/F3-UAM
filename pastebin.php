@@ -1,13 +1,10 @@
-$f3->route('GET|POST /linkwise',
+$f3->route('GET|POST /link',
     function($f3) {
 		$url = "feed.xml";
 		$xmlfile = file_get_contents($url);
-		//echo $xmlfile;
 		$fileContents = str_replace(array("\n", "\r", "\t"), '', $xmlfile);
 		$fileContents = trim(str_replace('"', "'", $fileContents));
-		//echo $fileContents;
 		$simpleXml = simplexml_load_string($fileContents, NULL, LIBXML_NOCDATA);
-		//echo var_dump($simpleXml);
 		$json = json_encode($simpleXml);
 		$json = str_replace("@", "", $json);
 		
@@ -28,12 +25,7 @@ $f3->route('GET|POST /linkwise',
 			echo "</div>";
 			echo "</div>";
 			echo "";
-			
-			//mb_internal_encoding("UTF-8");
-			//echo mb_substr($prod->product_name,0,75) . "...<br />";
-			//echo $prod->product_name. "<br /><br />";
-			//echo "<img src='" . $prod->image_url . "' style='height:100px;'><br />";
-			//echo json_encode($prod);
+
 		}
 	}
 	);
