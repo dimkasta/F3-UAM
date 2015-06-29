@@ -1,3 +1,8 @@
+//for pass hash backwards compatibility
+if (version_compare(phpversion(), '5.3.10', '<')) {
+    // php version isn't high enough
+}
+
 $f3->route('GET|POST /link',
     function($f3) {
 		$url = "feed.xml";
