@@ -305,7 +305,7 @@ echo '<img src="' . $test23 . '" />';
 
 ##ToDo
 
-~[Issue Tracking](https://github.com/dimkasta/F3-UAM/issues)
+[Issue Tracking](https://github.com/dimkasta/F3-UAM/issues)
 
 ##About
 This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr or at @dimkasta
