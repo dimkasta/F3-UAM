@@ -304,24 +304,8 @@ echo '<img src="' . $test23 . '" />';
 ```
 
 ##ToDo
-- [ ] Add demo site.
-- [x] ~~Add Sample Controller~~
-- [ ] Make calls more REST/JSON friendly
-- [ ] Make role queries simpler
-- [x] ~~Create a RESTAPI Helper (Can be used standalone)~~
-- [x] ~~Account deactivation (for admin usage or user closing their own account)~~
-- [ ] Make newvalue type check internal. Split it to two fields
-- [x] ~~Do not allow guest as a username.~~
-- [x] ~~Add a function to cache gravatar link.~~
-- [x] ~~Implement basic Role Management.~~
-- [ ] Add support for older PHP versions.
-- [ ] Implement a mechanism to lock login attempts after 3 consecutive failed login attempts. And send an email to the user.
-- [ ] Create templates for all routes.
-- [ ] Create email templates.
-- [ ] Create sample route ini file
-- [ ] Multilingual support
-- [x] ~~Implement doLogout().~~
-- [ ] Add good practice suggestions like csrf check, throttling etc.
+
+~[Issue Tracking](https://github.com/dimkasta/F3-UAM/issues)
 
 ##About
 This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr or at @dimkasta
