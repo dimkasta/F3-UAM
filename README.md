@@ -2,6 +2,12 @@
 
 A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
+Please keep in mind that this is a very early version. I might (and probably does) have many issues.
+
+You can check my dev server here
+
+http://f3.autowebic.com
+
 ##Table of Contents
 
 * [Requirements](#requirements)
