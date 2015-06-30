@@ -8,9 +8,8 @@
     Copyright (c) 2015 by dimkasta
     Dimitris Kastaniotis <dimkasta@yahoo.gr>
     @version 0.1.5.alpha
-	Requires PHP 5.5
+    Requires PHP 5.5
  **/
-	
 	class WebUAM extends \Prefab {
 	
 		public function __construct() {
@@ -342,5 +341,4 @@ $txt = "You received this email because you have requested to " . $message . " a
 			return "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
 		}
 	}
- 
  ?>
