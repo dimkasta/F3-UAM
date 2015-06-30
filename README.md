@@ -2,7 +2,11 @@
 
 A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
-Please keep in mind that this is a very early version. I might (and probably does) have many issues.
+Please keep in mind that this is a work in progress and should be not used in production sites.
+
+For a complete list of pending functionality check
+
+https://github.com/dimkasta/F3-UAM/issues
 
 You can check my dev server here
 
