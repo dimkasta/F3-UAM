@@ -315,7 +315,7 @@ echo '<img src="' . $test23 . '" />';
 
 by purchasing your hosting through our affilliate link below
 
-[![Hostgator Hosting - by autowebic](http://tracking.hostgator.com/img/Green/728x90.gif)](http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=dimkasta-seomymeta)
+[![Hostgator Hosting - by autowebic](https://tracking.hostgator.com/img/Green/728x90.gif)](http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=dimkasta-gitf3uam)
 
 
 ##About
