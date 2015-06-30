@@ -311,6 +311,13 @@ echo '<img src="' . $test23 . '" />';
 
 [Issue Tracking](https://github.com/dimkasta/F3-UAM/issues)
 
+##Please Consider supporting us 
+
+by purchasing your hosting through our affilliate link below
+
+[![Hostgator Hosting - by autowebic](http://tracking.hostgator.com/img/Green/728x90.gif)](http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=dimkasta-seomymeta)
+
+
 ##About
 This is a new plugin so treat it with caution. If you have any questions or corrections, feel free to contact me at dimkasta@yahoo.gr or at @dimkasta
 
