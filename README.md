@@ -145,9 +145,9 @@ else {
 You do not need to pass anything to the function. It gets everything it wants from GET.
 
 ###User Login
-* User clicks the login link. A route is needed to show the form.
+* User clicks the login link. The route shows the form.
 * A route receives the login POST and implements the dologin($username, $password) function
-* The function now returns a JSON object with messages
+* The function returns a JSON object with messages
 
 ```PHP
 $test13 = \WebUAM::doLogin('username', '12345678');
