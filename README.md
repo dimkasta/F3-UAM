@@ -60,7 +60,7 @@ You also need RESTAPI.php in the same folder, which is just a small helper class
 
 ##Usage
 
-All WebUAM functions are now static so there is no need for extra initialization code.
+All WebUAM functions are now static so there is no need for extra initialization code in your index.php.
 
 ###DB Table Creation
 
@@ -102,7 +102,7 @@ This is also the call that checks if the fluidmode is true to create the tables.
 * The functions return a json object that includes detailed messages and errors
 
 ```PHP
-$test = $f3->uam->usernameAvailable("myusername");
+$test = \WebUAM::usernameAvailable("myusername");
 if($test->success) {
     echo $test->messages->username;
 }
@@ -110,7 +110,7 @@ else {
     echo $test->errors->username;
 }
 
-$test3 = $f3->uam->emailAvailable("me@mydomain.com");
+$test3 = \WebUAM::emailAvailable("me@mydomain.com");
 if($test3->success ) {
     echo $test3->messages->email;
 }
@@ -122,7 +122,7 @@ else {
 * The server receives the data in a POST route that implements doSubscription($username, $email, $password). Email and username are revalidated, the password is hashed, and a verification token is created. The user is saved as inactive and unverified, and a verification link is emailed to the user.
 
 ```PHP
-$test8 = $f3->uam->doSubscription("newusername", "me@mydomain.com", "12345678");
+$test8 = \WebUAM::doSubscription("newusername", "me@mydomain.com", "12345678");
 if($test8->success) {
     echo $test8->messages->form;
 }
@@ -134,7 +134,7 @@ else {
 * The user receives an email with a validation link and clicks it. He is sent to a route that must implement the validateEmail() function. This must be the route defined in the config, so that the class knows what alias to include in the verification link. The token is checked and if it is found identical and less than 1 day has passed from its creation, then the user is switched to verified and active in the db.
 
 ```PHP
-$test7 = $f3->uam->validateEmail();
+$test7 = \WebUAM::validateEmail();
 if($test7){
     echo "ok mail validate<br />";
 }
@@ -150,7 +150,7 @@ You do not need to pass anything to the function. It gets everything it wants fr
 * The function now returns a JSON object with messages
 
 ```PHP
-$test13 = $f3->uam->doLogin('username', '12345678');
+$test13 = \WebUAM::doLogin('username', '12345678');
 if($test13->success){
     echo $test13->messages->form;
 }
@@ -166,7 +166,7 @@ else {
 * The server receives the GET verification request on the same configured route. If the newvalue is not empty, it should check if it contains an email. If yes, then execute doChangeEmail() which changes the email and resets the temp fields.
 
 ```PHP
-$test10 = $f3->uam->doChangeEmail();
+$test10 = \WebUAM::doChangeEmail();
 if($test10){
     echo "ok do change email";
 }
@@ -180,7 +180,7 @@ else {
 * The server receives the change password POST in a route that implements requestChangePassword('87654321'). A new verification token is created and the new pass is hased and stored in newvalue. An email is sent to the user with a verification link.
  
 ```PHP
-$test11 = $f3->uam->requestChangePassword('123456');
+$test11 = \WebUAM::requestChangePassword('123456');
 if($test11){
     echo "ok req change pass<br />";
 }
@@ -193,7 +193,7 @@ else {
 * The server receives the GET verification request on the same configured route. If the newvalue is not empty, it should check if it contains an email. If not, then execute doChangePassword() which changes the password and resets the temp fields.
 
 ```PHP
-$test12 = $f3->uam->doChangePassword();
+$test12 = \WebUAM::doChangePassword();
 if($test12){
     echo "ok req change pass<br />";
 }
@@ -206,14 +206,14 @@ else {
 * User clicks the Logout link. The route uses the restartSession($username) function to reset the SESSION and set the username to "guest"
 
 ```PHP
-$f3->uam->doLogout();
+\WebUAM::doLogout();
 ```
 
 ###Simple role Management
 The plugin contains simple Role management. Role State is stored in boolean (tinyint(1)) fields called isAdmin, isAuthor and isEditor. These 3 Roles were chosen as default because they fit the most common CMS practice. But you can easily add your own columns/Roles and access them. The relevant API works like this
 
 ```PHP
-$test14 = $f3->uam->isAdmin('dimkasta');
+$test14 = \WebUAM::isAdmin('dimkasta');
 if($test14){
     echo "is in role<br />";
 }
@@ -221,7 +221,7 @@ else {
 	echo "not in role<br />";
 }
 			
-$test15 = $f3->uam->isEditor('dimkasta');
+$test15 = \WebUAM::isEditor('dimkasta');
 if($test15){
 	echo "is in role<br />";
 }
@@ -229,7 +229,7 @@ else {
 	echo "not in role<br />";
 }
 			
-$test16 = $f3->uam->isAuthor('dimkasta');
+$test16 = \WebUAM::isAuthor('dimkasta');
 if($test16){
 	echo "is in role<br />";
 }
@@ -237,7 +237,7 @@ else {
 	echo "not in role<br />";
 }
 
-$test17 = $f3->uam->toggleAdmin('dimkasta');
+$test17 = \WebUAM::toggleAdmin('dimkasta');
 if($test17){
 	echo "ok role change on<br />";
 }
@@ -245,7 +245,7 @@ else {
 	echo "ok role change off<br />";
 }
 			
-$test18 = $f3->uam->toggleAuthor('dimkasta');
+$test18 = \WebUAM::toggleAuthor('dimkasta');
 if($test18){
 	echo "ok role change on<br />";
 }
@@ -253,7 +253,7 @@ else {
 	echo "ok role change off<br />";
 }
 			
-$test19 = $f3->uam->toggleEditor('dimkasta');
+$test19 = \WebUAM::toggleEditor('dimkasta');
 if($test19){
 	echo "ok role change on<br />";
 }
@@ -265,7 +265,7 @@ else {
 There are also functions that allow you to access your own Role columns. All you have to do is add them in the Users table with a type of tinyint(1), and use them as follows
 
 ```PHP
-$test20 = $f3->uam->isInRole("myusername", "isNewRole");
+$test20 = \WebUAM::isInRole("myusername", "isNewRole");
 if($test20){
 	echo "is in role<br />";
 }
@@ -273,7 +273,7 @@ else {
 	echo "not in role<br />";
 }
 
-$test21 = $f3->uam->toggleRole("myusername", "isNewRole");
+$test21 = \WebUAM::toggleRole("myusername", "isNewRole");
 if($test21){
 	echo "ok role change on<br />";
 }
@@ -286,7 +286,7 @@ else {
 To be used in a simple route after a confirmation message
 
 ```
-$test22 = $f3->uam->toggleAccountActivation('thisUserName');
+$test22 = \WebUAM::toggleAccountActivation('thisUserName');
 if($test22){
 	echo "account is active<br />";
 }
@@ -300,7 +300,7 @@ You can use this to get the Gravatar image url
 The login function calls it automatically after success and stores it into SESSION['gravatar'].
 
 ```
-$test23 = getGravatar($email);
+$test23 = \WebUAM::getGravatar($email);
 echo '<img src="' . $test23 . '" />';
 ```
 
