@@ -64,7 +64,7 @@ All WebUAM functions are now static so there is no need for extra initialization
 
 ###DB Table Creation
 
-Table creation is automatic, if you set a configuration variable. I call it fluidmode to keep it in context with existing F3 experience (Cortex). Just remember to set it to false to save some processing time.
+Table creation is automatic. You just have to set a configuration variable. I call it fluidmode to keep it in context with existing F3 experience (Cortex). Just remember to set it to false after the table is created, to save some processing time.
 
 ```PHP
 fluidmode=true
