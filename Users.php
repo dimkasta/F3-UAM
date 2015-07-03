@@ -15,7 +15,7 @@ class Users {
 		$f3->reroute('/login');
 	}
 	
-	public static function login() {
+	public static function login($f3) {
 		\FatTemplate::showContent('samples/login.htm');
 	}
 	
