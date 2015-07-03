@@ -10,7 +10,7 @@
     @version 0.1.6.alpha
 	Requires PHP 5.5
  **/
-	class WebUAM extends \Prefab {
+	class WebUAM {
 		
 		public static function createUserTable($f3) {
 			$f3->get($f3->dbobject)->exec("CREATE TABLE IF NOT EXISTS Users (
