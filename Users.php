@@ -7,24 +7,26 @@ class Users {
 	}
     
 	public static function doSubscribe($f3) {
-		\RESTAPI::returnJSON($f3->uam->doSubscription($f3->POST['username'], $f3->POST['email'], $f3->POST['password']);
+		$params = json_decode(file_get_contents('php://input'));
+		\RESTAPI::returnJSON(\WebUAM::doSubscription($params->username, $params->email, $params->password));
 	}
 	
 	public static function validateEmail($f3) {
-		$f3->uam->validateEmail();
+		\WebUAM::validateEmail();
 		$f3->reroute('/login');
 	}
 	
 	public static function login() {
-		//Show login form
+		\FatTemplate::showContent('samples/login.htm');
 	}
 	
 	public static function doLogin($f3) {
-		\RESTAPI::returnJSON($f3->uam->doLogin($f3->POST['username'], $f3->POST['password']));
+		$params = json_decode(file_get_contents('php://input'));
+		\RESTAPI::returnJSON(\WebUAM::doLogin($params->username, $params->password));
 	}
 	
 	public static function logout($f3) {
-		$f3->uam->doLogout();
+		\WebUAM::doLogout();
 		$f3->reroute('/');
 	}
 }
