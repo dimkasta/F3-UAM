@@ -1,4 +1,4 @@
-# F3-UAM v0.1.5.alpha
+# F3-UAM v0.1.6.alpha
 
 A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
@@ -60,11 +60,7 @@ You also need RESTAPI.php in the same folder, which is just a small helper class
 
 ##Usage
 
-WebUAM extends \Prefab, so you can use the static instance() call to get your object
-
-```PHP
-$f3->uam = \WebUAM::instance();
-```
+All WebUAM functions are now static so there is no need for extra initialization code.
 
 ###DB Table Creation
 
