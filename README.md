@@ -92,8 +92,9 @@ This creates a Users table and includes the following fields
 * Session is reset with a guest user name
 
 ```PHP
-$f3->uam->startSession();
+\WebUAM::startSession();
 ```
+This is also the call that checks if the fluidmode is true to create the tables.
 
 ###User Signup
 * User clicks the Sign Up link. A Route is needed to display the form
