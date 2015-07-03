@@ -7,19 +7,11 @@
     can be waived if you get permission from the copyright holder.
     Copyright (c) 2015 by dimkasta
     Dimitris Kastaniotis <dimkasta@yahoo.gr>
-    @version 0.1.5.alpha
-    Requires PHP 5.5
+    @version 0.1.6.alpha
+	Requires PHP 5.5
  **/
 	class WebUAM extends \Prefab {
-	
-		public function __construct() {
-			$f3 = \Base::instance();
-			if($f3->fluidmode === true) {
-				\WebUAM::createUSerTable($f3);
-			}
-		}
 		
-		//Call it statically to create the User table
 		public static function createUserTable($f3) {
 			$f3->get($f3->dbobject)->exec("CREATE TABLE IF NOT EXISTS Users (
 			  ID int(11) NOT NULL AUTO_INCREMENT,
@@ -38,23 +30,27 @@
 			)");
 		}
 
-		public function startSession() {
+		public static function startSession() {
 			$f3 = \Base::instance();
+			$uam = \WebUAM::instance();
 			if(!$f3->SESSION[$f3->sessionusername]) {
-		    		$f3->uam->clearSession();
+		    		$uam->clearSession();
 		    	}
+		    	if($f3->fluidmode === true) {
+				\WebUAM::createUSerTable($f3);
+			}
 		}
 				
 		//Clearing the SESSION and resetting username to 'guest'
-		public function clearSession() {
+		public static function clearSession() {
 			$f3 = \Base::instance();
 			$f3->clear("SESSION");
 			$f3->SESSION[$f3->sessionusername]= 'guest';
-			$f3->SESSION['gravatar'] = $this->getGravatar('guest');
+			$f3->SESSION['gravatar'] = \WebUAM::getGravatar('guest');
 		}
 		
 		//Verify that username does not exist. Nice for Ajax GET validation
-		public function usernameAvailable($username) {
+		public static function usernameAvailable($username) {
 			$json = \RESTAPI::getObject();
 			if($username === 'guest') {
 				$json->success = false;
@@ -77,7 +73,7 @@
 		}
 		
 		//Verify that email does not exist and that MX entries exist. Nice for Ajax GET validation
-		public function emailAvailable($newemail) {
+		public static function emailAvailable($newemail) {
 			$rest = \RESTAPI::getObject();
 			$audit = \Audit::instance();
 			$valid = $audit->email($newemail, TRUE);
@@ -101,9 +97,9 @@
 		}
 		
 		//Revalidates user and email, Stores the user data, creates a validation token and emails it
-		public function doSubscription($username, $email, $password) {
-			$usernameValid = $this->usernameAvailable($username);
-			$emailValid = $this->emailAvailable($email);
+		public static function doSubscription($username, $email, $password) {
+			$usernameValid = \WebUAM::usernameAvailable($username);
+			$emailValid = \WebUAM::emailAvailable($email);
 			$passwordValid = strlen($password) >= 8;
 			$json = \RESTAPI::getObject();
 			$json->errors->email = $emailValid->errors->email;
@@ -129,7 +125,7 @@
 				$passoptions = ['cost' => 11, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 				$user->password = password_hash($password, PASSWORD_BCRYPT, $passoptions );
 				$user->save();
-				$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
+				\WebUAM::sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
 				$json->success = true;
 				$json->messages->form = "Sign Up successful. Please check your email for the verifification email link";
 			}
@@ -141,7 +137,7 @@
 		}
 		
 		//Should be triggered by the emailverificationroute to verify the email link click and activate the account
-		public function validateEmail() {
+		public static function validateEmail() {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$token = $f3->get('GET.token');
@@ -155,7 +151,7 @@
 				$user->verificationtoken = password_hash($f3->get('POST.email'), PASSWORD_BCRYPT, $options);
 				$user->tokendate = $now->format(\DateTime::ISO8601);
 				$user->save();
-				$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
+				\WebUAM::sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
 	$message = "The token was older than 1 day. We have sent you a fresh one. Please check your email and click the verification link";
 				throw new Exception($message);
 			}
@@ -175,7 +171,7 @@
 			
 		}
 		
-		public function doLogin($username, $password) {
+		public static function doLogin($username, $password) {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=? AND isVerified = 1 AND isActive = 1',$username));
@@ -183,7 +179,7 @@
 			if(!($user->dry()) && password_verify($password, $user->password))
 			{
 				$f3->SESSION[$f3->sessionusername] = $user->username;
-				$f3->SESSION['gravatar'] = $this->getGravatar($user->email);
+				$f3->SESSION['gravatar'] = \WebUAM::getGravatar($user->email);
 				$json->success = true;
 				$json->messages->form = "Login Success";
 			}
@@ -195,13 +191,13 @@
 		}
 		
 		//Wipes out the SESSION entries and sets username to 'guest'
-		public function doLogout() {
-			$this->clearSession();
+		public static function doLogout() {
+			\WebUAM::clearSession();
 		}
 		
 		//Creates the verification token, stores the new email for reference and sends the validation email
-		public function requestChangeEmail($newEmail) {
-			if($this->emailAvailable($newEmail)) {
+		public static function requestChangeEmail($newEmail) {
+			if(\WebUAM::emailAvailable($newEmail)) {
 				$f3 = \Base::instance();
 				$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 				$user->load(array('username=?',$f3->SESSION[$f3->sessionusername]));
@@ -209,7 +205,7 @@
 				$user->verificationtoken = password_hash($newEmail, PASSWORD_BCRYPT, $options);
 				$user->newvalue = $newEmail;
 				$user->save();
-				$this->sendValidationTokenEmail($newEmail, $user->verificationtoken, "Change your Email");
+				\WebUAM::sendValidationTokenEmail($newEmail, $user->verificationtoken, "Change your Email");
 				return true;
 			}
 			else {
@@ -218,7 +214,7 @@
 		}
 		
 		//Checks the token against the stored new email and stored token, and updates the email upon success
-		public function doChangeEmail() {
+		public static function doChangeEmail() {
 			$f3 = \Base::instance();
 			$email = $f3->GET["email"];
 			$token = $f3->GET["token"];
@@ -236,7 +232,7 @@
 		}
 		
 		//Creates the verification token, stores the new email for reference and sends the validation email
-		public function requestChangePassword($newPassword) {
+		public static function requestChangePassword($newPassword) {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=?',$f3->SESSION[$f3->sessionusername]));
@@ -245,12 +241,12 @@
 			$passoptions = ['cost' => 11, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
 			$user->newvalue = password_hash($newPassword, PASSWORD_BCRYPT, $passoptions);
 			$user->save();
-			$this->sendValidationTokenEmail($user->email, $user->verificationtoken, "Change your Password");
+			\WebUAM::sendValidationTokenEmail($user->email, $user->verificationtoken, "Change your Password");
 			return true;
 		}
 		
 		//called from the clicked link to execute the password change.
-		public function doChangePassword() {
+		public static function doChangePassword() {
 			$f3 = \Base::instance();
 			$email = $f3->GET["email"];
 			$token = $f3->GET["token"];
@@ -268,7 +264,7 @@
 		}
 		
 		//Called to send the validation token
-		public function sendValidationTokenEmail($email, $token, $message) {
+		public static function sendValidationTokenEmail($email, $token, $message) {
 			$f3 = \Base::instance();
 				$subject = $f3->site . " - Email Verificaton";
 $txt = "You received this email because you have requested to " . $message . " at ". $f3->site . "\n Please click the link below to verify it\nhttp://" . $f3->domain . "/" . $f3->emailverificationroute . "?email=" . $email . "&token=" . $token;
@@ -277,37 +273,37 @@ $txt = "You received this email because you have requested to " . $message . " a
 		}
 
 		//Used to check if the user is an administrator
-		public function isAdmin($username) {
-			return $this->isInRole($username, 'isAdmin');
+		public static function isAdmin($username) {
+			return \WebUAM::isInRole($username, 'isAdmin');
 		}
 		
 		//Used to toggle user as Admin
-		public function toggleAdmin($username) {
-			return $this->toggleRole($username, 'isAdmin');
+		public static function toggleAdmin($username) {
+			return \WebUAM::toggleRole($username, 'isAdmin');
 		}
 		
 		//Used to check if the user is an Author
-		public function isAuthor($username) {
-			return $this->isInRole($username, 'isAuthor');
+		public static function isAuthor($username) {
+			return \WebUAM::isInRole($username, 'isAuthor');
 		}
 		
 		//Used to toggle user as Author
-		public function toggleAuthor($username) {
-			return $this->toggleRole($username, 'isAuthor');
+		public static function toggleAuthor($username) {
+			return \WebUAM::toggleRole($username, 'isAuthor');
 		}
 		
 		//Used to check if the user is an Editor
-		public function isEditor($username) {
-			return $this->isInRole($username, 'isEditor');
+		public static function isEditor($username) {
+			return \WebUAM::isInRole($username, 'isEditor');
 		}
 		
 		//Used to toggle user as Editor
-		public function toggleEditor($username) {
-			return $this->toggleRole($username, 'isEditor');
+		public static function toggleEditor($username) {
+			return \WebUAM::toggleRole($username, 'isEditor');
 		}
 		
 		//Used to check if the user has a role
-		public function isInRole($username, $role) {
+		public static function isInRole($username, $role) {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=?',$username));
@@ -315,7 +311,7 @@ $txt = "You received this email because you have requested to " . $message . " a
 		}
 		
 		//Used to toggle user role
-		public function toggleRole($username, $role) {
+		public static function toggleRole($username, $role) {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=?',$username));
@@ -325,7 +321,7 @@ $txt = "You received this email because you have requested to " . $message . " a
 		}
 		
 		//Used to deacctivate user account and so not allowing login
-		public function toggleAccountActivation($username) {
+		public static function toggleAccountActivation($username) {
 			$f3 = \Base::instance();
 			$user=new \DB\SQL\Mapper($f3->get($f3->dbobject),'Users');
 			$user->load(array('username=?',$username));
@@ -335,10 +331,11 @@ $txt = "You received this email because you have requested to " . $message . " a
 		}
 		
 		//Gets the gravatar image and stores the link into SESSION
-		public function getGravatar($email) {
+		public static function getGravatar($email) {
 			$size = 80;
 			$f3 = \Base::instance();
 			return "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
 		}
 	}
+ 
  ?>
