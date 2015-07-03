@@ -32,9 +32,8 @@
 
 		public static function startSession() {
 			$f3 = \Base::instance();
-			$uam = \WebUAM::instance();
 			if(!$f3->SESSION[$f3->sessionusername]) {
-		    		$uam->clearSession();
+		    		\WebUAM::clearSession();
 		    	}
 		    	if($f3->fluidmode === true) {
 				\WebUAM::createUSerTable($f3);
@@ -44,7 +43,7 @@
 		//Clearing the SESSION and resetting username to 'guest'
 		public static function clearSession() {
 			$f3 = \Base::instance();
-			$f3->clear("SESSION");
+			\WebUAM::clear("SESSION");
 			$f3->SESSION[$f3->sessionusername]= 'guest';
 			$f3->SESSION['gravatar'] = \WebUAM::getGravatar('guest');
 		}
