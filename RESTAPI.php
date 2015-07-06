@@ -1,5 +1,5 @@
 <?php
-	//REST AI Helper class
+	//REST API Helper class
 	class RESTAPI {
 		
 		public static function getObject() {
