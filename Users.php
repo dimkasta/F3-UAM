@@ -16,7 +16,7 @@ class Users {
 	}
 	
 	public static function login($f3) {
-		\FatTemplate::showContent('samples/login.htm');
+		//Show the login form
 	}
 	
 	public static function doLogin($f3) {
