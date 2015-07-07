@@ -43,7 +43,7 @@
 		//Clearing the SESSION and resetting username to 'guest'
 		public static function clearSession() {
 			$f3 = \Base::instance();
-			\WebUAM::clear("SESSION");
+			$f3->clear('SESSION');
 			$f3->SESSION[$f3->sessionusername]= 'guest';
 			$f3->SESSION['gravatar'] = \WebUAM::getGravatar('guest');
 		}
