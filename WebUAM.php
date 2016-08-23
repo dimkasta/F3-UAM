@@ -22,7 +22,7 @@
 			  tokendate datetime NOT NULL,
 			  isActive tinyint(1) NOT NULL,
 			  password varchar(100) NOT NULL,
-			  newValue varchar(100) NOT NULL,
+			  newvalue varchar(100) NOT NULL,
 			  isAdmin tinyint(1) NOT NULL,
 			  isAuthor tinyint(1) NOT NULL,
 			  isEditor tinyint(4) NOT NULL,
