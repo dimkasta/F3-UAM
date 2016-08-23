@@ -7,13 +7,19 @@ class User {
     var $gravatar;
     var $message;
     var $roles;
+    var $profile;
 
     function __construct() {
-        $this->username = "guest";
-        $this->email = "";
+        setAsGuest();
 
         $f3 = \Base::instance();
         $f3->set("SESSION.user", $this);
+    }
+
+    function setAsGuest() {
+        $this->username = "guest";
+        $this->email = "";
+        $this->roles = [];
     }
 
     function login($username, $password) {
@@ -33,9 +39,7 @@ class User {
     }
 
     function logout() {
-        $this->username = "guest";
-        $this->email = "";
-        unset($this->roles);
+        setAsGuest();
         return $this;
     }
 
