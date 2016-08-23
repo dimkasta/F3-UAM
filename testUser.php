@@ -29,10 +29,6 @@ $test->expect(
     'getGravatar() is a function as ' . $callablename
 );
 
-$test->expect(
-    is_callable(array($user, 'setAsGuest'), false, $callablename),
-    'setAsGuest() is a function as ' . $callablename
-);
 
 
 
