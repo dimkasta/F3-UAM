@@ -9,17 +9,17 @@ class User {
     var $roles;
     var $profile;
 
-    function __construct() {
-        setAsGuest();
-
-        $f3 = \Base::instance();
-        $f3->set("SESSION.user", $this);
-    }
 
     function setAsGuest() {
         $this->username = "guest";
         $this->email = "";
         $this->roles = [];
+    }
+
+    function __construct() {
+        $this->setAsGuest();
+        $f3 = \Base::instance();
+        $f3->set("SESSION.user", $this);
     }
 
     function login($username, $password) {
@@ -39,7 +39,7 @@ class User {
     }
 
     function logout() {
-        setAsGuest();
+        $this->setAsGuest();
         return $this;
     }
 

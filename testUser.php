@@ -6,7 +6,8 @@ $test = new Test();
 
 include('src/User.php');
 
-$user = new User();
+new User();
+$user = $f3->get("SESSION.user");
 
 $test->expect(
     is_callable(array($user, 'login'), false, $callablename),
@@ -28,24 +29,29 @@ $test->expect(
     'getGravatar() is a function as ' . $callablename
 );
 
-$user1 = $f3->get("SESSION.user");
+$test->expect(
+    is_callable(array($user, 'setAsGuest'), false, $callablename),
+    'setAsGuest() is a function as ' . $callablename
+);
+
+
 
 $test->expect(
-    !empty($user1),
+    !empty($user),
      'Created a user session'
 );
 
 $user->login("dimkasta", "12345678");
 
-$user2 = $f3->get("SESSION.user");
+//$user2 = $f3->get("SESSION.user");
 
 $test->expect(
-    $user2->username == "dimkasta",
+    $user->username == "dimkasta",
     'User Logged in'
 );
 
 $test->expect(
-    $user2->roles == [2],
+    $user->roles == [2],
     'User Roles'
 );
 
@@ -58,10 +64,10 @@ $test->expect(
 
 $user->logout();
 
-$user3 = $f3->get("SESSION.user");
+//$user3 = $f3->get("SESSION.user");
 
 $test->expect(
-    $user3->username == "guest",
+    $user->username == "guest",
     'User logged out'
 );
 
