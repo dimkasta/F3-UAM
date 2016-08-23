@@ -30,6 +30,7 @@ class User {
             $this->message = "Successfully Logged in"; //TODO: Multilingual
             $this->roles = $this->getRoles(); //Setting as plain user
             //TODO: Check for other roles
+            //TODO: Load profile info
         }
         else {
             $this->message = "Unsuccessful attempt"; //TODO: Multilingual

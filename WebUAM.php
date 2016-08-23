@@ -48,7 +48,7 @@
 			  PRIMARY KEY (ID)
 			)");
 
-			//TODO: Add Role, UserRoles tables and FKs
+			//TODO: Add Role, UserRoles, UserProfileFields, ProfileField tables and FKs
 		}
 
 		public static function startSession() {
