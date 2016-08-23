@@ -22,12 +22,33 @@
 			  tokendate datetime NOT NULL,
 			  isActive tinyint(1) NOT NULL,
 			  password varchar(100) NOT NULL,
-			  newvalue varchar(100) NOT NULL,
+			  newValue varchar(100) NOT NULL,
 			  isAdmin tinyint(1) NOT NULL,
 			  isAuthor tinyint(1) NOT NULL,
 			  isEditor tinyint(4) NOT NULL,
 			  PRIMARY KEY (ID)
 			)");
+		}
+
+		public static function createTables($f3) {
+			$f3->get($f3->dbobject)->exec("CREATE TABLE IF NOT EXISTS Users (
+			  ID int(11) NOT NULL AUTO_INCREMENT,
+			  username varchar(10) NOT NULL,
+			  email varchar(50) NOT NULL,
+			  isVerified tinyint(1) NOT NULL,
+			  verificationtoken varchar(100) NOT NULL,
+			  tokendate datetime NOT NULL,
+			  isActive tinyint(1) NOT NULL,
+			  password varchar(100) NOT NULL,
+			  newEmail varchar(100) NOT NULL,
+			  newPassword varchar(100) NOT NULL,
+			  isAdmin tinyint(1) NOT NULL,
+			  isAuthor tinyint(1) NOT NULL,
+			  isEditor tinyint(4) NOT NULL,
+			  PRIMARY KEY (ID)
+			)");
+
+			//TODO: Add Role, UserRoles tables and FKs
 		}
 
 		public static function startSession() {
