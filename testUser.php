@@ -1,54 +1,46 @@
 <?php
-
-$f3=require('lib/base.php');
+//TODO: Make this an installer
+$f3=require('../../fatfree-master/lib/base.php');
+$f3->config('config.ini');
+$f3->set('db',new \DB\SQL('mysql:host=' . $f3->dbHost . ';port=' . $f3->dbPort . ';dbname=' . $f3->dbName , $f3->dbUser , $f3->dbPassword));
+$f3->set('DEBUG',3);
 
 $test = new Test();
 
-include('src/User.php');
 
-new User();
-$user = $f3->get("SESSION.user");
-
-$test->expect(
-    is_callable(array($user, 'login'), false, $callablename),
-    'login is a function as ' . $callablename
-);
-
-$test->expect(
-    is_callable(array($user, 'getRoles'), false, $callablename),
-    'getRoles is a function as ' . $callablename
-);
-
-$test->expect(
-    is_callable(array($user, 'logout'), false, $callablename),
-    'logout() is a function as ' . $callablename
-);
-
-$test->expect(
-    is_callable(array($user, 'getGravatar'), false, $callablename),
-    'getGravatar() is a function as ' . $callablename
-);
-
-
-
+new UamUser();
+$user = $f3->get("SESSION.uamUser");
 
 $test->expect(
     !empty($user),
      'Created a user session'
 );
 
-$user->login("dimkasta", "12345678");
+$test->expect(
+    $f3->uamRoles[1] == "Administrator",
+    'Loaded admin role '
+);
 
-//$user2 = $f3->get("SESSION.user");
+$user->login("administrator", "12345678");
 
 $test->expect(
-    $user->username == "dimkasta",
-    'User Logged in'
+    $user->username == "administrator",
+    'User Logged in ' /*. JSON_ENCODE($f3->get('SESSION.user'))*/
 );
 
 $test->expect(
-    $user->roles == [2],
-    'User Roles'
+    $user->roles == [1],
+    'Load User Roles'
+);
+
+$test->expect(
+    $user->isInRole(0) === false,
+    'User is not in Role 0'
+);
+
+$test->expect(
+    $user->isAdmin() === true,
+    'User is Admin'
 );
 
 $gravatar = $user->getGravatar($user->email, 80);
@@ -58,24 +50,39 @@ $test->expect(
     "Getting Gravatar "
 );
 
-$user->logout();
+$isUser = $user->isUser();
+$test->expect(
+    $isUser == true,
+    "Is User "
+);
 
-//$user3 = $f3->get("SESSION.user");
+$user->logout();
 
 $test->expect(
     $user->username == "guest",
-    'User logged out'
+    'User Logged Out ' /*. JSON_ENCODE($f3->get('SESSION.user'))*/
+);
+
+$isUser = $user->isUser();
+$test->expect(
+    $isUser == false,
+    "Is Guest "
+);
+
+$subscriptionResult = $user->subscribe("dimkasta", "12345678", "dimkasta@yahoo.com");
+$test->expect(
+    !empty($subscriptionResult),
+    'User Subscription ' /*. JSON_ENCODE($subscriptionResult)*/
 );
 
 
 
-//        echo JSON_ENCODE($test->results());
 foreach ($test->results() as $result) {
-    echo $result['text'].'<br>';
+    echo $result['text'].' <strong>';
     if ($result['status'])
-        echo 'Pass';
+        echo 'Pass</strong>';
     else
-        echo 'Fail ('.$result['source'].')';
+        echo 'Fail</strong> ('.$result['source'].')';
     echo '<br><br>';
 }
 ?>

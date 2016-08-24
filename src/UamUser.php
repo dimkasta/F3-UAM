@@ -1,6 +1,6 @@
 <?php
 
-class User {
+class UamUser {
 
     var $username;
     var $email;
@@ -13,22 +13,24 @@ class User {
     function setAsGuest() {
         $this->username = "guest";
         $this->email = "";
-        $this->roles = [];
+        unset($this->roles);
     }
 
     function __construct() {
         $this->setAsGuest();
         $f3 = \Base::instance();
-        $f3->set("SESSION.user", $this);
+        $f3->set("SESSION.uamUser", $this);
+
+        \WebUAM::initialize();
     }
 
     function login($username, $password) {
-        //TODO: Check db
-        if(true) {
+        $loginResult = \WebUAM::doLogin($username, $password);
+
+        if($loginResult->success) {
             $this->username = $username;
             $this->email = "dimkasta@yahoo.gr";
-            $this->message = "Successfully Logged in"; //TODO: Multilingual
-            $this->roles = $this->getRoles(); //Setting as plain user
+            $this->roles = \WebUAM::getRoles();
             //TODO: Check for other roles
             //TODO: Load profile info
         }
@@ -48,9 +50,19 @@ class User {
         return "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
     }
 
-    function getRoles() {
-        //TODO: Get from db
-        //It should have by default 1 as administrator, and 2 as plain user
-        return [2];
+    function isUser() {
+        return $this->username != 'guest';
+    }
+
+    function isAdmin() {
+        return $this->isInRole(1);
+    }
+
+    function isInRole($role_id) {
+        return \WebUAM::isInRole($role_id);
+    }
+
+    function subscribe($username, $password, $email) {
+        return \WebUAM::doSubscription($username, $password, $email);
     }
 }
