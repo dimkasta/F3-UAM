@@ -1,12 +1,12 @@
 <div class="userinfo">
-    <img src="{{ @SESSION.uamUser->gravatar }}" class="gravatar" > {{ @SESSION.uamUser->username }}
+    <img src="{{ @SESSION.uamUser->gravatar }}" class="gravatar" > <a href="myprofile">{{ @SESSION.uamUser->username }}</a>
 
         <!--<repeat group="{{ @SESSION.uamUser->roles }}" value="{{ @role }}">-->
             <!--{{ @uamRoles[@role] }}-->
         <!--</repeat>-->
         <check if="{{ @SESSION.uamUser->isInRole(1) == true }}">
             <true>
-                <a class="pull-right" href="users">Users</a>
+                <span class="pull-right"><a href="users">Users</a> | <a href="roles">Roles</a></span>
             </true>
         </check>
 

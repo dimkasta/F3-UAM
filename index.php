@@ -78,4 +78,28 @@ $f3->route('GET /users',
     }
 );
 
+$f3->route('GET /roles',
+    function($f3) {
+        if($f3->get("SESSION.uamUser")->isInRole(1)) {
+            $f3->view = "roles.html";
+            echo \Template::instance()->render('master.html');
+        }
+        else {
+            $f3->reroute('/');
+        }
+    }
+);
+
+$f3->route('GET /myprofile',
+    function($f3) {
+        if($f3->get("SESSION.uamUser")->isUser()) {
+            $f3->view = "myprofile.html";
+            echo \Template::instance()->render('master.html');
+        }
+        else {
+            $f3->reroute('/login');
+        }
+    }
+);
+
 $f3->run();

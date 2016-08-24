@@ -1,8 +1,11 @@
+html {
+    height: 100%;
+}
 body {
-    background-image: url('../img/mount.jpg');
+    background: linear-gradient( rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.5) ), url('../img/mount.jpg');
     background-position-x: center;
     background-repeat: no-repeat;
-
+    height: 100%;
     background-height:  100%;
 }
 
@@ -66,7 +69,18 @@ footer {
     padding: 10px;
 }
 
-.loginform {
+ .loginform {
     position: relative;
     top: 200px;
 }
+
+.myprofile {
+    position: relative;
+    top: 100px;
+
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
