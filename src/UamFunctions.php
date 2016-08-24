@@ -11,7 +11,7 @@
  * @version 0.2.1.alpha
  * Requires PHP 5.5
  **/
-class WebUAM
+class Uamfunctions
 {
     public static function initialize()
     {
@@ -105,8 +105,8 @@ class WebUAM
         $f3 = \Base::instance();
 
         //Validate entries
-        $usernameValid = \WebUAM::usernameAvailable($username);
-        $emailValid = \WebUAM::emailAvailable($email);
+        $usernameValid = \Uamfunctions::usernameAvailable($username);
+        $emailValid = \Uamfunctions::emailAvailable($email);
         $passwordValid = strlen($password) >= 8;
 
         //TODO: This below is not very clear

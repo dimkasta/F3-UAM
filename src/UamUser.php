@@ -21,17 +21,16 @@ class UamUser {
         $f3 = \Base::instance();
         $f3->set("SESSION.uamUser", $this);
 
-        \WebUAM::initialize();
+        \Uamfunctions::initialize();
     }
 
     function login($username, $password) {
-        $loginResult = \WebUAM::doLogin($username, $password);
+        $loginResult = \Uamfunctions::doLogin($username, $password);
 
         if($loginResult->success) {
             $this->username = $username;
             $this->email = "dimkasta@yahoo.gr";
-            $this->roles = \WebUAM::getRoles();
-            //TODO: Check for other roles
+            $this->roles = \Uamfunctions::getRoles();
             //TODO: Load profile info
         }
         else {
@@ -59,10 +58,10 @@ class UamUser {
     }
 
     function isInRole($role_id) {
-        return \WebUAM::isInRole($role_id);
+        return \Uamfunctions::isInRole($role_id);
     }
 
     function subscribe($username, $password, $email) {
-        return \WebUAM::doSubscription($username, $password, $email);
+        return \Uamfunctions::doSubscription($username, $password, $email);
     }
 }
