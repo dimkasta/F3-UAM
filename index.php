@@ -24,8 +24,6 @@ $f3->route('POST /dologin',
     function($f3) {
         $result = $f3->get("SESSION.uamUser")->login($f3->get("POST.username"), $f3->get("POST.password"));
 
-        echo $f3->get("POST.username") . '=' . $f3->get("POST.password");
-
         if($result->success) {
             $f3->reroute('/');
         }
@@ -41,6 +39,42 @@ $f3->route('GET /dologout',
     function($f3) {
         $result = $f3->get("SESSION.uamUser")->logout();
         $f3->reroute('/');
+    }
+);
+
+$f3->route('GET /subscribe',
+    function($f3) {
+        $f3->view = "subscribe.html";
+        echo \Template::instance()->render('master.html');
+    }
+);
+
+
+$f3->route('POST /dosubscribe',
+    function($f3) {
+        $result = $f3->get("SESSION.uamUser")->subscribe($f3->get("POST.username"), $f3->get("POST.password"), $f3->get("POST.email"));
+
+        echo JSON_ENCODE($result);
+
+        if($result->success) {
+            $f3->reroute('/');
+        }
+        else {
+            //TODO: Fix messages and how they are passed by the framework
+            $f3->reroute('/login');
+        }
+    }
+);
+
+$f3->route('GET /users',
+    function($f3) {
+        if($f3->get("SESSION.uamUser")->isInRole(1)) {
+            $f3->view = "users.html";
+            echo \Template::instance()->render('master.html');
+        }
+        else {
+            $f3->reroute('/');
+        }
     }
 );
 

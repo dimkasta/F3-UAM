@@ -11,11 +11,10 @@ class UamUser {
 
 
     function setAsGuest() {
-        echo "setting guest";
         $this->username = "guest";
         $this->email = "guest";
         $this->gravatar = \Uamfunctions::getGravatar("guest", 80);
-        unset($this->roles);
+        $this->roles = [];
     }
 
     public static function get() {
