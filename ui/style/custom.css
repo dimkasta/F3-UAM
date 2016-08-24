@@ -1,0 +1,70 @@
+body {
+    background-image: url('../img/mount.jpg');
+    background-position-x: center;
+    background-repeat: no-repeat;
+
+    background-height:  100%;
+}
+
+h1 {
+
+    text-align: center;
+    margin: 10px;
+}
+
+h1 > a, h1 > a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+h1 > a > small {
+    color: white;
+}
+
+.userinfo {
+    padding: 10px;
+    color: white;
+}
+
+hr {
+    margin: 0px;
+}
+
+.userinfo > img {
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    margin-right: 5px;
+}
+
+.homebuttons {
+    text-align: center;
+    position: relative;
+    top:200px;
+}
+
+.ghost {
+    border-width: 3px !important;
+    background-color: rgba(0,0,0,0) !important;
+}
+
+.form-buttons {
+    text-align: center;
+}
+
+.invalid {
+    background-color: lightpink;
+}
+
+.footer {
+    margin: 0 auto;
+    position: absolute;
+    bottom: 0px;
+    color: white;
+    padding: 10px;
+}
+
+.loginform {
+    position: relative;
+    top: 200px;
+}

@@ -11,15 +11,23 @@ class UamUser {
 
 
     function setAsGuest() {
+        echo "setting guest";
         $this->username = "guest";
-        $this->email = "";
+        $this->email = "guest";
+        $this->gravatar = \Uamfunctions::getGravatar("guest", 80);
         unset($this->roles);
     }
 
-    function __construct() {
-        $this->setAsGuest();
+    public static function get() {
         $f3 = \Base::instance();
-        $f3->set("SESSION.uamUser", $this);
+        if(empty($f3->get("SESSION.uamUser"))) {
+            $user = new UamUser();
+            $user->setAsGuest();
+            $f3->set("SESSION.uamUser", $user);
+        }
+        else {
+            $user = $f3->get("SESSION.uamUser");
+        }
 
         \Uamfunctions::initialize();
     }
@@ -28,25 +36,22 @@ class UamUser {
         $loginResult = \Uamfunctions::doLogin($username, $password);
 
         if($loginResult->success) {
-            $this->username = $username;
-            $this->email = "dimkasta@yahoo.gr";
+            //$this->username = $username;
+            //$this->email = "dimkasta@yahoo.gr";
+            //$this->gravatar = \Uamfunctions::getGravatar()
             $this->roles = \Uamfunctions::getRoles();
-            //TODO: Load profile info
+            //TODO: Enhancement: Load profile info
         }
         else {
             $this->message = "Unsuccessful attempt"; //TODO: Multilingual
             //TODO: Limit unsuccesful attempts per ip, etc
         }
-        return $this;
+        return $loginResult;
     }
 
     function logout() {
         $this->setAsGuest();
         return $this;
-    }
-
-    function getGravatar($email, $size) {
-        return "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
     }
 
     function isUser() {

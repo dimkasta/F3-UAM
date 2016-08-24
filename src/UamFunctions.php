@@ -27,7 +27,6 @@ class Uamfunctions
             $f3->uamFluidMode = false;
         }
         if ($f3->uamFluidMode === true && $tables[0]["countTables"]  < 1) {
-            echo "creating tables";
             \Uamfunctions::createTables();
         }
 
@@ -131,9 +130,10 @@ class Uamfunctions
             $f3->userMapper->email = $email;
             $d = new \DateTime('NOW');
             $f3->userMapper->tokendate = $d->format(\DateTime::ISO8601);
+            $f3->userMapper->verificationtoken = password_hash($email, PASSWORD_DEFAULT);
             $f3->userMapper->password = password_hash($password, PASSWORD_DEFAULT);
             $f3->userMapper->save();
-            \Uamfunctions::sendValidationTokenEmail($f3->userMapper->email, $f3->userMapper->verificationtoken, "Create an Account");
+            \UamEmail::sendValidationTokenEmail($f3->userMapper->email, $f3->userMapper->verificationtoken, "Create an Account");
             $json->success = true;
             //TODO: Remove form messages ?
             $json->messages->form = "Sign Up successful. Please check your email for the verifification email link";
@@ -192,6 +192,8 @@ class Uamfunctions
         return $rest;
     }
 
+
+
     public static function doLogin($username, $password)
     {
         $f3 = \Base::instance();
@@ -203,6 +205,12 @@ class Uamfunctions
         $passWordIsValid = password_verify($password, $f3->userMapper->password);
 
         if ($userExistsAndIsActive && $passWordIsValid) {
+            $user = $f3->get("SESSION.uamUser");
+            $user->username = $f3->userMapper->username;
+            $user->email = $f3->userMapper->email;
+            $user->gravatar = \Uamfunctions::getGravatar($user->email, 80);
+            $user->ID = $f3->userMapper->ID;
+
             $json->success = true;
         } else {
             $json->success = false;
@@ -232,7 +240,9 @@ class Uamfunctions
         return in_array($role_id, $f3->get('SESSION.uamUser')->roles);
     }
 
-
+    public static function getGravatar($email, $size) {
+        return "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
+    }
 
 
 
@@ -252,27 +262,27 @@ class Uamfunctions
     public static function validateEmail()
     {
         $f3 = \Base::instance();
-        $user = new \DB\SQL\Mapper($f3->get($f3->dbobject), 'Users');
+//        $user = new \DB\SQL\Mapper($f3->get($f3->dbobject), 'Users');
         $token = $f3->get('GET.token');
         $email = $f3->get('GET.email');
-        $user->load(array('email=? AND isActive = 0 AND isVerified = 0', $f3->get('GET.email')));
+        $f3->userMapper->load(array('email=? AND isActive = 0 AND isVerified = 0', $f3->get('GET.email')));
         $now = new \DateTime('NOW');
-        $tokendate = new \DateTime($user->tokendate);
+        $tokendate = new \DateTime($f3->userMapper->tokendate);
         //check if verification code is old and resend email
         if (date_add($tokendate, date_interval_create_from_date_string('1 days')) < $now) {
-            $options = ['cost' => 5, 'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),];
-            $user->verificationtoken = password_hash($f3->get('POST.email'), PASSWORD_BCRYPT, $options);
-            $user->tokendate = $now->format(\DateTime::ISO8601);
-            $user->save();
-            \WebUAM::sendValidationTokenEmail($user->email, $user->verificationtoken, "Create an Account");
+            $f3->userMapper->verificationtoken = password_hash($f3->get('POST.email'), PASSWORD_DEFAULT);
+            $f3->userMapper->tokendate = $now->format(\DateTime::ISO8601);
+            $f3->userMapper->save();
+            \WebUAM::sendValidationTokenEmail($f3->userMapper->email, $f3->userMapper->verificationtoken, "Create an Account");
+            //TODO: Make this return an object
             $message = "The token was older than 1 day. We have sent you a fresh one. Please check your email and click the verification link";
             throw new Exception($message);
         } else {
             //verify email
-            if (!($user->dry()) && $user->verificationtoken == $f3->get('GET.token')) {
-                $user->isVerified = 1;
-                $user->isActive = 1;
-                $user->save();
+            if (!($f3->userMapper->dry()) && $f3->userMapper->verificationtoken == $f3->get('GET.token')) {
+                $f3->userMapper->isVerified = 1;
+                $f3->userMapper->isActive = 1;
+                $f3->userMapper->save();
                 return true;
             } else {
                 return false;
@@ -350,15 +360,7 @@ class Uamfunctions
         }
     }
 
-    //Called to send the validation token
-    public static function sendValidationTokenEmail($email, $token, $message)
-    {
-        $f3 = \Base::instance();
-        $subject = $f3->site . " - Email Verificaton";
-        $txt = "You received this email because you have requested to " . $message . " at " . $f3->site . "\n Please click the link below to verify it\nhttp://" . $f3->domain . "/" . $f3->emailverificationroute . "?email=" . $email . "&token=" . $token;
-        $headers = "From: " . $f3->email;
-//        mail($email, $subject, $txt, $headers);
-    }
+
 
 
 

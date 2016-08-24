@@ -1,0 +1,12 @@
+<check if="{{ @SESSION.uamUser->username === 'guest' }}">
+    <true>
+        <div class="row homebuttons">
+            <a href="login" class="btn btn-lg btn-info ghost">Sign In</a> <a href="subscribe" class="btn btn-lg btn-warning ghost">Subscribe</a>
+        </div>
+    </true>
+    <false>
+        <div class="row homebuttons">
+            <a href="dologout" class="btn btn-lg btn-danger ghost">Sign Out</a>
+        </div>
+    </false>
+</check>
