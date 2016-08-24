@@ -22,9 +22,13 @@ class Uamfunctions
         //Create tables if fluidmode is on and schema does not exist
         $tables = $f3->uamDb->exec("SELECT COUNT(TABLE_NAME) as countTables FROM information_schema.tables WHERE TABLE_SCHEMA = '" . $f3->uamDb->name() . "' AND TABLE_NAME = 'users'");
 
+        if(empty($f3->uamFluidMode))
+        {
+            $f3->uamFluidMode = false;
+        }
         if ($f3->uamFluidMode === true && $tables[0]["countTables"]  < 1) {
             echo "creating tables";
-            \WebUAM::createTables();
+            \Uamfunctions::createTables();
         }
 
         //Preparing the User Mapper
@@ -129,7 +133,7 @@ class Uamfunctions
             $f3->userMapper->tokendate = $d->format(\DateTime::ISO8601);
             $f3->userMapper->password = password_hash($password, PASSWORD_DEFAULT);
             $f3->userMapper->save();
-            \WebUAM::sendValidationTokenEmail($f3->userMapper->email, $f3->userMapper->verificationtoken, "Create an Account");
+            \Uamfunctions::sendValidationTokenEmail($f3->userMapper->email, $f3->userMapper->verificationtoken, "Create an Account");
             $json->success = true;
             //TODO: Remove form messages ?
             $json->messages->form = "Sign Up successful. Please check your email for the verifification email link";

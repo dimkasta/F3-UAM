@@ -6,83 +6,103 @@ $f3->set('db',new \DB\SQL('mysql:host=' . $f3->dbHost . ';port=' . $f3->dbPort .
 $f3->set('DEBUG',3);
 
 $test = new Test();
+echo "<H1>F3 User Access Management Installation</H1>";
 
-
-new UamUser();
-$user = $f3->get("SESSION.uamUser");
-
+//TODO: Put these in a separate test
 $test->expect(
-    !empty($user),
-     'Created a user session'
+    !empty($f3->uamDbObjectName),
+    'Database Object: Set uamDbObjectName in your configuration file to the name of the f3 database object of your application <br>(Found ' . $f3->uamDbObjectName . ')'
 );
 
 $test->expect(
-    $f3->uamRoles[1] == "Administrator",
-    'Loaded admin role '
+    !empty($f3->uamFluidMode),
+    'Fluid mode: Set uamFluidMode=true in your configuration file to allow the library create the tables. After that, set it to false to save '
 );
 
-$user->login("administrator", "12345678");
+if(!empty($f3->uamDbObjectName) && !empty($f3->uamFluidMode)) {
+    $test->expect(
+        $f3->get($f3->get(uamDbObjectName))->driver() == "mysql",
+        'Database Driver: F3 UAM supports mySQL <br>(Found ' . $f3->get($f3->get(uamDbObjectName))->driver() . ')'
+    );
 
-$test->expect(
-    $user->username == "administrator",
-    'User Logged in ' /*. JSON_ENCODE($f3->get('SESSION.user'))*/
-);
 
-$test->expect(
-    $user->roles == [1],
-    'Load User Roles'
-);
 
-$test->expect(
-    $user->isInRole(0) === false,
-    'User is not in Role 0'
-);
 
-$test->expect(
-    $user->isAdmin() === true,
-    'User is Admin'
-);
+    new UamUser();
+    $user = $f3->get("SESSION.uamUser");
 
-$gravatar = $user->getGravatar($user->email, 80);
+    $test->expect(
+        !empty($user),
+        'Created a user session'
+    );
 
-$test->expect(
-    $gravatar == "http://www.gravatar.com/avatar/7ef40ad5bab9c53123d75a9583175120?d=mm&s=80",
-    "Getting Gravatar "
-);
+    $test->expect(
+        $f3->uamRoles[1] == "Administrator",
+        'Loaded admin role '
+    );
 
-$isUser = $user->isUser();
-$test->expect(
-    $isUser == true,
-    "Is User "
-);
+    $user->login("administrator", "12345678");
 
-$user->logout();
+    $test->expect(
+        $user->username == "administrator",
+        'User Logged in ' /*. JSON_ENCODE($f3->get('SESSION.user'))*/
+    );
 
-$test->expect(
-    $user->username == "guest",
-    'User Logged Out ' /*. JSON_ENCODE($f3->get('SESSION.user'))*/
-);
+    $test->expect(
+        $user->roles == [1],
+        'Load User Roles'
+    );
 
-$isUser = $user->isUser();
-$test->expect(
-    $isUser == false,
-    "Is Guest "
-);
+    $test->expect(
+        $user->isInRole(0) === false,
+        'User is not in Role 0'
+    );
 
-$subscriptionResult = $user->subscribe("dimkasta", "12345678", "dimkasta@yahoo.com");
-$test->expect(
-    !empty($subscriptionResult),
-    'User Subscription ' /*. JSON_ENCODE($subscriptionResult)*/
-);
+    $test->expect(
+        $user->isAdmin() === true,
+        'User is Admin'
+    );
 
+    $gravatar = $user->getGravatar($user->email, 80);
+
+    $test->expect(
+        $gravatar == "http://www.gravatar.com/avatar/7ef40ad5bab9c53123d75a9583175120?d=mm&s=80",
+        "Getting Gravatar "
+    );
+
+    $isUser = $user->isUser();
+    $test->expect(
+        $isUser == true,
+        "Is User "
+    );
+
+    $user->logout();
+
+    $test->expect(
+        $user->username == "guest",
+        'User Logged Out ' /*. JSON_ENCODE($f3->get('SESSION.user'))*/
+    );
+
+    $isUser = $user->isUser();
+    $test->expect(
+        $isUser == false,
+        "Is Guest "
+    );
+
+    $subscriptionResult = $user->subscribe("dimkasta", "12345678", "dimkasta@yahoo.com");
+    $test->expect(
+        !empty($subscriptionResult),
+        'User Subscription ' /*. JSON_ENCODE($subscriptionResult)*/
+    );
+}
 
 
 foreach ($test->results() as $result) {
     echo $result['text'].' <strong>';
     if ($result['status'])
-        echo 'Pass</strong>';
+        echo '<br><span style="color:green;">Pass</span></strong>';
     else
-        echo 'Fail</strong> ('.$result['source'].')';
+        echo '<br><span style="color:red;">Fail</span></strong> ('.$result['source'].')';
     echo '<br><br>';
 }
 ?>
