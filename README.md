@@ -1,12 +1,23 @@
-# F3-UAM v0.1.6.alpha
+# F3-UAM v0.2.1.alpha
 
-A plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
+UPDATE (8/2016): Development is active once more. 
+
+**DO NOT use over your old code. The Current code is not compatible with the old**
+
+**Documentation also requires heavy changes**
+
+If you used the library before, a lot of things are changed.
+
+If you need any features now would be the time to ask for them with an Issue
+
+
+F3 UAM is a plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
 
 For a complete list of pending functionality check the link below
 
 https://github.com/dimkasta/F3-UAM/issues
 
-UPDATE (8/2016): Development is active once more. If you need any features now would be the time to ask for them with an Issue
+
 
 Please keep in mind that this is a work in progress and should be used with care.
 
