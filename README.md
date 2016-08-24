@@ -6,11 +6,9 @@ For a complete list of pending functionality check the link below
 
 https://github.com/dimkasta/F3-UAM/issues
 
-Please keep in mind that this is a work in progress and should be not used in production sites.
+UPDATE (8/2016): Development is active once more. If you need any features now would be the time to ask for them with an Issue
 
-You can check my dev server here
-
-http://f3.autowebic.com
+Please keep in mind that this is a work in progress and should be used with care.
 
 ##Table of Contents
 
