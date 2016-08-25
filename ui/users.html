@@ -1,1 +1,45 @@
-list
+<div class="row">
+<div class="col-md-10 col-md-offset-1 userlist">
+    <h2>
+        User List
+    </h2>
+    <table class="table table-stripped">
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Verirified
+            </th>
+            <th>
+                Active
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        <repeat group="{{ @uamUsers }}" value="{{ @user}}">
+            <tr>
+                <td>
+                    {{ @user->username }}
+                </td>
+                <td>
+                    <input type="checkbox" <check if="{{ @user->isVerified == true }}"><true>checked</true></check> /> {{ @user->email }}
+                </td>
+                <td>
+                    <input type="checkbox" <check if="{{ @user->isVerified == true }}"><true>checked</true></check> />
+                </td>
+                <td>
+                    <input type="checkbox" <check if="{{ @user->isActive == true }}"><true>checked</true></check> >
+                </td>
+                <td style="width: 395px;">
+                    <a href="#" class="btn btn-danger">Toggle Active</a> <a href="#" class="btn btn-warning">Reset Password</a> <a href="#" class="btn btn-primary">Roles</a> <a href="#" class="btn btn-primary">Profile</a>
+                </td>
+            </tr>
+        </repeat>
+    </table>
+</div>
+</div>

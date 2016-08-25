@@ -62,8 +62,11 @@ class Uamfunctions
 			  newPassword varchar(100) NOT NULL,
 			  PRIMARY KEY (ID)
 			)");
-        $f3->set('userMapper', new \DB\SQL\Mapper($f3->uamDb, 'Users'));
+        //To make sure admin ID is random
+        $f3->uamDb->exec("ALTER TABLE Users AUTO_INCREMENT=" . rand(1000,10000));
 
+        $f3->set('userMapper', new \DB\SQL\Mapper($f3->uamDb, 'Users'));
+        //TODO: Seed ID into a random number to avoid admin always having 1 as ID
         $f3->userMapper->reset();
         $f3->userMapper->username = 'administrator';
         $f3->userMapper->email = $f3->uamEmail;
@@ -90,15 +93,57 @@ class Uamfunctions
               ID int(11) NOT NULL AUTO_INCREMENT,
               user_id int(11) NOT NULL,
               role_id int(11) NOT NULL,
+              PRIMARY KEY (ID),
+              FOREIGN KEY (user_id) REFERENCES Users(ID) ON DELETE CASCADE,
+              FOREIGN KEY (role_id) REFERENCES Roles(ID) ON DELETE CASCADE
+            )
+        ");
+
+        $f3->uamDb->exec("
+            INSERT INTO UserRoles (role_id, user_id) VALUES (1, (SELECT MAX(ID) FROM Users))
+        ");
+
+        $f3->uamDb->exec("
+            CREATE TABLE IF NOT EXISTS ProfileFields (
+              ID int(11) NOT NULL AUTO_INCREMENT,
+              fieldname varchar(20) NOT NULL,
+              fieldorder int(11) NOT NULL,
+              mandatory tinyint(1),
               PRIMARY KEY (ID)
             )
         ");
 
         $f3->uamDb->exec("
-            INSERT INTO UserRoles (role_id, user_id) VALUES (1,1)
+            INSERT INTO ProfileFields (fieldname, fieldorder, mandatory) VALUES ('First Name', 1, 1)
+        ");
+        $f3->uamDb->exec("
+            INSERT INTO ProfileFields (fieldname, fieldorder, mandatory) VALUES ('Last Name', 2, 0)
+        ");
+        $f3->uamDb->exec("
+            INSERT INTO ProfileFields (fieldname, fieldorder, mandatory) VALUES ('Company', 3, 0)
         ");
 
-        //TODO: Enhancement Add UserProfileFields, ProfileField tables and FKs
+        $f3->uamDb->exec("
+            CREATE TABLE IF NOT EXISTS UserProfileFields (
+              ID int(11) NOT NULL AUTO_INCREMENT,
+              field_id int(11) NOT NULL,
+              user_id int(11) NOT NULL,
+              field_value varchar(100) NOT NULL,
+              PRIMARY KEY (ID),
+              FOREIGN KEY (field_id) REFERENCES ProfileFields(ID) ON DELETE CASCADE,
+              FOREIGN KEY (user_id) REFERENCES Users(ID) ON DELETE CASCADE
+            )
+        ");
+
+        $f3->uamDb->exec("
+            INSERT INTO UserProfileFields (field_id, field_value, user_id) VALUES (1, 'Awesome Admin', (SELECT MAX(ID) FROM Users))
+        ");
+        $f3->uamDb->exec("
+            INSERT INTO UserProfileFields (field_id, field_value, user_id) VALUES (3, 'Iconic LTD', (SELECT MAX(ID) FROM Users))
+        ");
+        //TODO: Enhancement Add FKs
+
+
     }
 
     //Validates user and email, Stores the user data, creates a validation token and emails it
@@ -192,8 +237,6 @@ class Uamfunctions
         return $rest;
     }
 
-
-
     public static function doLogin($username, $password)
     {
         $f3 = \Base::instance();
@@ -244,7 +287,10 @@ class Uamfunctions
         return "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=mm&s=" . $size;
     }
 
-
+    public static function getAll() {
+        $f3 = \Base::instance();
+        return $f3->userMapper->find('ID>0', array( 'order'=>'username'));
+    }
 
 
 

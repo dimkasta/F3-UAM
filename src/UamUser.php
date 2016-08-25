@@ -38,6 +38,7 @@ class UamUser {
             //$this->username = $username;
             //$this->email = "dimkasta@yahoo.gr";
             //$this->gravatar = \Uamfunctions::getGravatar()
+            //TODO: Move this to uam functions?
             $this->roles = \Uamfunctions::getRoles();
             //TODO: Enhancement: Load profile info
         }
@@ -67,5 +68,9 @@ class UamUser {
 
     function subscribe($username, $password, $email) {
         return \Uamfunctions::doSubscription($username, $password, $email);
+    }
+
+    function getAll() {
+        return \Uamfunctions::getAll();
     }
 }

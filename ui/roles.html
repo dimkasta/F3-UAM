@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 userlist">
+        <h2>
+            Role List
+        </h2>
+        <table class="table table-stripped">
+            <tr>
+                <th>
+                    Role
+                </th>
+                <th style="text-align: right;">
+                    Actions
+                </th>
+            </tr>
+            <repeat group="{{ @uamRoles }}" value="{{ @role }}" key="{{ @ID }}">
+                <tr>
+                    <td>
+                        <input type="text" value="{{ @role }}" class="form-control" />
+                    </td>
+                    <td style="text-align: right;">
+                        <a href="#" class="btn btn-primary">Save</a> <a href="#" class="btn btn-primary">Delete</a>
+                    </td>
+                </tr>
+            </repeat>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 userlist">
+        <h2>New Role</h2>
+        <form>
+            <div class="form-group ">
+                <input type="text" value="Role Name" class="form-control" >
+            </div>
+            <div class="form-group">
+                <a href="#" class="btn btn-success ">Add Role</a>
+            </div>
+        </form>
+    </div>
+</div>
