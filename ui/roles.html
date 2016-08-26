@@ -15,10 +15,13 @@
             <repeat group="{{ @uamRoles }}" value="{{ @role }}" key="{{ @ID }}">
                 <tr>
                     <td>
-                        <input type="text" value="{{ @role }}" class="form-control" />
+                        <form id="roleSaveForm{{ @ID }}" method="POST" action="updaterole">
+                            <input type="hidden" name="roleId" id="roleId" value="{{ @ID }}">
+                            <input type="text" name="roleName" id="roleName" value="{{ @role }}" class="form-control" />
+                        </form>
                     </td>
                     <td style="text-align: right;">
-                        <a href="#" class="btn btn-primary">Save</a> <a href="#" class="btn btn-primary">Delete</a>
+                        <a href="#" for="roleSaveForm{{ @ID }}" id="roleSaveButton_{{ @ID }}" class="roleSaveButton btn btn-primary btn_verification">Save</a> <a href="#" for="roleSaveForm{{ @ID }}" class="roleDeleteButton btn btn-danger btn_verification">Delete</a>
                     </td>
                 </tr>
             </repeat>
@@ -26,15 +29,43 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4 col-md-offset-4 userlist">
+    <div class="col-md-4 col-md-offset-4 userlist newRoleList">
         <h2>New Role</h2>
-        <form>
             <div class="form-group ">
-                <input type="text" value="Role Name" class="form-control" >
+                <form id="newRoleForm" method="POST" action="newrole">
+                    <input name="newRoleName" id="newRoleName"  type="text" placeholder="Role Name" class="form-control" >
+                </form>
             </div>
             <div class="form-group">
-                <a href="#" class="btn btn-success ">Add Role</a>
+                <a href="#" for="newRoleForm" class="newRoleButton btn btn-success ">Add Role</a>
             </div>
-        </form>
     </div>
 </div>
+
+<script>
+    $(function() {
+        $(".btn_verification").click(function(event) {
+
+           if(!confirm("Are you sure?")) {
+               event.stopImmediatePropagation();
+
+           }
+        });
+
+        $(".roleSaveButton").click(function(){
+           var form = $(this).attr("for");
+           $('#' + form).submit();
+        });
+
+        $(".roleDeleteButton").click(function(){
+            var form = $(this).attr("for");
+            $('#' + form).attr('action', 'deleterole');
+            $('#' + form).submit();
+        });
+
+        $(".newRoleButton").click(function(){
+            var form = $(this).attr("for");
+            $('#' + form).submit();
+        });
+    });
+</script>

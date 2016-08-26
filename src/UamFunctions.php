@@ -34,9 +34,9 @@ class Uamfunctions
         $f3->set('userMapper', new \DB\SQL\Mapper($f3->uamDb, 'Users'));
 
         //Preloading all roles
-        $roleMapper = new \DB\SQL\Mapper($f3->uamDb, 'Roles');
+        $f3->set('roleMapper', new \DB\SQL\Mapper($f3->uamDb, 'Roles'));
         $uamRoles = [];
-        $roles = $roleMapper->find();
+        $roles = $f3->roleMapper->find();
         foreach ($roles as $role) {
             $uamRoles[$role->ID] = $role->role;
         }
@@ -292,9 +292,51 @@ class Uamfunctions
         return $f3->userMapper->find('ID>0', array( 'order'=>'username'));
     }
 
+    public static function updateRole() {
+        $f3 = \Base::instance();
 
+        $id = $f3->get('POST.roleId');
+        $newRoleName = $f3->get('POST.roleName');
 
+        echo $id . "-" . $newRoleName;
 
+        $f3->roleMapper->load(array('ID = ?', $id));
+        if($f3->roleMapper->dry()) {
+            //echo "nope";
+            return false;
+        }
+        else {
+            $f3->roleMapper->role = $newRoleName;
+            $f3->roleMapper->save();
+            //echo "yep";
+            return true;
+        }
+
+    }
+
+    public static function deleteRole() {
+        $f3 = \Base::instance();
+
+        $id = $f3->get('POST.roleId');
+
+        if($id == 1){
+            return false;
+        }
+        else {
+            $f3->roleMapper->load(array('ID = ?', $id));
+            $f3->roleMapper->erase();
+        }
+    }
+
+    public static function newRole() {
+        $f3 = \Base::instance();
+
+        $name = $f3->get('POST.newRoleName');
+        $f3->roleMapper->reset();
+        $f3->roleMapper->role = $name;
+        $f3->roleMapper->save();
+        $f3->roleMapper->reset();
+    }
 
 
 

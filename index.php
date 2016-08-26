@@ -68,7 +68,7 @@ $f3->route('POST /dosubscribe',
 
 $f3->route('GET /users',
     function($f3) {
-        if($f3->get("SESSION.uamUser")->isInRole(1)) {
+        if($f3->get("SESSION.uamUser")->isAdmin()) {
 
             $f3->set("uamUsers", $f3->get('SESSION.uamUser')->getAll());
 
@@ -83,12 +83,51 @@ $f3->route('GET /users',
 
 $f3->route('GET /roles',
     function($f3) {
-        if($f3->get("SESSION.uamUser")->isInRole(1)) {
+        if($f3->get("SESSION.uamUser")->isAdmin()) {
             $f3->view = "roles.html";
             echo \Template::instance()->render('master.html');
         }
         else {
             $f3->reroute('/');
+        }
+    }
+);
+
+$f3->route('POST /updaterole',
+    function($f3) {
+        if(\Uamfunctions::updateRole()) {
+            //TODO: success messages?
+            $f3->reroute('roles');
+        }
+        else {
+            //TODO: Errors?
+            $f3->reroute('roles');
+        }
+    }
+);
+
+$f3->route('POST /deleterole',
+    function($f3) {
+        if(\Uamfunctions::deleteRole()) {
+            //TODO: success messages?
+            $f3->reroute('roles');
+        }
+        else {
+            //TODO: Errors?
+            $f3->reroute('roles');
+        }
+    }
+);
+
+$f3->route('POST /newrole',
+    function($f3) {
+        if(\Uamfunctions::newRole()) {
+            //TODO: success messages?
+            $f3->reroute('roles');
+        }
+        else {
+            //TODO: Errors?
+            $f3->reroute('roles');
         }
     }
 );

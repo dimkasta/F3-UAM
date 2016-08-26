@@ -73,4 +73,6 @@ class UamUser {
     function getAll() {
         return \Uamfunctions::getAll();
     }
+
+    //TODO: Close Account option and fields
 }
