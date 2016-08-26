@@ -6,11 +6,19 @@ UPDATE (8/2016): Development is active once more.
 
 **DO NOT use over your old code. The Current code is not compatible with the old**
 
-**Documentation also requires heavy changes**
+## New Features
+
+* Role Management
+* Profile Management
+* Ready Admin Pages using bootstrap
+
+**Documentation requires heavy changes**
 
 If you used the library before, a lot of things are changed.
 
 If you need any features now would be the time to ask for them with an Issue
+
+
 
 
 F3 UAM is a plugin standing somewhere between Model and Controller, abstracting good practice functionality around User Access Management in a Web Application based on F3
