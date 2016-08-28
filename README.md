@@ -4,7 +4,7 @@ UPDATE (8/2016): Development is active once more.
 
 **The code might not work in its current state**
 
-**DO NOT use over your old code. The Current code is not compatible with the old**
+**DO NOT use over your old code. The Current code is not compatible with the old one**
 
 ## New Features
 
