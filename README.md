@@ -1,6 +1,6 @@
 # F3-UAM v0.2.1.alpha
 
-UPDATE (8/2016): Development is active once more. 
+UPDATE (1/2017): Project is abandoned for now. I moved to Laravel and Syphony which pretty much have everything covered. Sorry everyone. 
 
 **The code might not work in its current state**
 
